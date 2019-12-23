@@ -1,0 +1,11 @@
+# Classic
+numpy
+pandas==0.24.0
+
+# Specific
+scrapy
+
+# Dev env
+jupyter
+jupyterlab
+autopep8

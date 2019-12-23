@@ -1,0 +1,18 @@
+# Unuseful files
+__pycache__
+.DS_Store
+.ipynb_checkpoints
+.vscode
+*.pyc
+
+# Data
+*.json
+*.jl
+data
+old_data
+scrapped_data
+
+
+# Environment files
+Pipfile
+Pipfile.lock
