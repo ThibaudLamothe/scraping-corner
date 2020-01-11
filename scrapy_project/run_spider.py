@@ -39,7 +39,7 @@ def get_PV():
     return file_name, spider_name, project_name
 
 
-def get_Xbasic():
+def get_X_basic():
     file_name = 'actu_x_summary_2.jl'
     spider_name = 'actuX_basic'
     project_name = 'XHEC'
@@ -53,7 +53,7 @@ def get_TrustPilot():
     return file_name, spider_name, project_name
 
 
-def get_airlineTA():
+def get_TA_airline():
     file_name = 'TA_airline_corner.jl'
     spider_name = 'airlineTA'
     project_name = 'TA'

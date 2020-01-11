@@ -58,7 +58,8 @@ class ReviewRestoItem(scrapy.Item):
     other_ratings_category = scrapy.Field()
     other_ratings_value = scrapy.Field()
 
-class HotelreviewsItem(scrapy.Item):
+
+class HotelReviewsItem(scrapy.Item):
     # define the fields for your item here like:
     rating = scrapy.Field()
     review = scrapy.Field()

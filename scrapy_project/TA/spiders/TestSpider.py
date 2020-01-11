@@ -1,14 +1,9 @@
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.selector import Selector
-import sys
-from scrapy.http import Request
-from scrapy.linkextractors import LinkExtractor
-from HotelReviews.items import HotelreviewsItem
-from HotelReviews.helper_functions import user_info_splitter
+from HotelReviews.items import HotelReviewsItem
 
 
-# TODO:Gerer price range, adresse, voir pour reponse manager, changer le join d'url
+# TODO: Gerer price range, adresse, voir pour reponse manager, changer le join d'url
 # TODO: Ajout des notes par catégories
 # TODO: Régler problème encoding
 
@@ -79,7 +74,7 @@ class MySpider(CrawlSpider):
 
     def parse_review_page(self, response):
 
-        item = HotelreviewsItem()
+        item = HotelReviewsItem()
 
         item["reviewer_id"] = next(iter(response.xpath(
             "//div[contains(@class,'prw_reviews_resp_sur_h_featured_review')]/div/div/div/div/div[contains(@class,'prw_reviews_user_links_hs')]/span/@data-memberid").extract()),

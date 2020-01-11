@@ -11,6 +11,11 @@ class SlPipeline(object):
         return item
 
 
+class HotelreviewsPipeline(object):
+    def process_item(self, item, spider):
+        return item
+
+
 # # FROM AIRLINE RUN
 #
 # # -*- coding: utf-8 -*-
