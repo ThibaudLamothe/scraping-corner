@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for SL project
+# Scrapy settings for HotelReviews project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,15 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'TA'
+BOT_NAME = 'HotelReviews'
 
-SPIDER_MODULES = ['TA.spiders']
-NEWSPIDER_MODULE = 'TA.spiders'
+SPIDER_MODULES = ['HotelReviews.spiders']
+NEWSPIDER_MODULE = 'HotelReviews.spiders'
 
-LOG_LEVEL = 'WARNING'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+#USER_AGENT = 'HotelReviews (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -25,15 +24,10 @@ ROBOTSTXT_OBEY = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 32
 
-# # FROM Airline SPider (@MC)
-# ITEM_PIPELINES = {'tripadvisor.pipelines.ValidateItemPipeline': 100,
-# 					'tripadvisor.pipelines.WriteItemPipeline': 200}
-
-
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 0.1
+#DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -53,13 +47,13 @@ CONCURRENT_REQUESTS = 32
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'SL.middlewares.SlSpiderMiddleware': 543,
+#    'HotelReviews.middlewares.HotelreviewsSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'SL.middlewares.SlDownloaderMiddleware': 543,
+#    'HotelReviews.middlewares.HotelreviewsDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -70,10 +64,10 @@ CONCURRENT_REQUESTS = 32
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'SL.pipelines.SlPipeline': 300,
-#}
+#ITEM_PIPELINES = {'HotelReviews.pipelines.JsonWithEncodingPipeline':200}
 
+#    'HotelReviews.pipelines.HotelreviewsPipeline': 300,
+#}
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -94,5 +88,3 @@ CONCURRENT_REQUESTS = 32
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-#DOWNLOAD_FAIL_ON_DATALOSS = False

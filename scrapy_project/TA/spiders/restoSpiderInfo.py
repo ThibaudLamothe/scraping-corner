@@ -1,18 +1,18 @@
 import scrapy
-from scrapy.TA.spiders import get_info
+from TA.spiders import get_info
 
 
 class QuotesSpider(scrapy.Spider):
     name = "restoTAinfo"
 
-    def __init__(self, *args, **kwargs): 
-        super(QuotesSpider, self).__init__(*args, **kwargs) 
-        
+    def __init__(self, *args, **kwargs):
+        super(QuotesSpider, self).__init__(*args, **kwargs)
+
         # Parse URL
-        self.start_urls = [kwargs.get('start_url')] 
+        self.start_urls = [kwargs.get('start_url')]
         if self.start_urls == [None]:
-            self.start_urls =[
-                'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html' # zone
+            self.start_urls = [
+                'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html'  # zone
             ]
         # Parse max_page
         self.max_page = kwargs.get('max_page')
@@ -24,7 +24,6 @@ class QuotesSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse_resto(self, response):
-
         resto_item = ReviewRestoItem()
 
         # URL

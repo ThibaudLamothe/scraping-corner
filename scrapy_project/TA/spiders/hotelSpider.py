@@ -1,6 +1,6 @@
 import scrapy
 from scrapy.spiders import CrawlSpider
-from scrapy.TA import HotelreviewsItem
+# from scrapy.TA import HotelreviewsItem
 
 
 class MySpider(CrawlSpider):
@@ -13,6 +13,7 @@ class MySpider(CrawlSpider):
         ]
 
     def parse(self, response):
+        print('HEEEEERE')
 
         all_review_pages = response.xpath(
             "//a[contains(@class,'pageNum') and contains(@class,'last')]/@data-offset").extract()

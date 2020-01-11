@@ -1,6 +1,6 @@
 import scrapy
-from scrapy.TA.spiders import get_info
-from scrapy.TA import ReviewRestoItem
+from TA.spiders import get_info
+from TA.items import ReviewRestoItem
 
 class QuotesSpider(scrapy.Spider):
     name = "restoTAcomment"

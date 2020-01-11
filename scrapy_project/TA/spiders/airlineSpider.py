@@ -1,14 +1,14 @@
-from scrapy.TA import TripAdvisorAirlineItem
+from TA.items import TripAdvisorAirlineItem
 from scrapy import Spider, Request
 import re
 
 class TripAdvisor(Spider):
-    name='airlineTA'
-    allowed_urls=['https://www.tripadvisor.ca']
-    start_urls=['https://www.tripadvisor.co.uk/Airline_Review-d8729141-Reviews-Ryanair',
-                'https://www.tripadvisor.co.uk/Airline_Review-d8729066-Reviews-EasyJet',
-                'https://www.tripadvisor.co.uk/Airline_Review-d8729171-Reviews-Transavia'
-                ]
+    name = 'airlineTA'
+    allowed_urls = ['https://www.tripadvisor.ca']
+    start_urls = ['https://www.tripadvisor.co.uk/Airline_Review-d8729141-Reviews-Ryanair',
+                  'https://www.tripadvisor.co.uk/Airline_Review-d8729066-Reviews-EasyJet',
+                  'https://www.tripadvisor.co.uk/Airline_Review-d8729171-Reviews-Transavia'
+                  ]
 
     def verify(self, page_list):
         if isinstance(page_list, list):
@@ -21,9 +21,9 @@ class TripAdvisor(Spider):
                 return page_list[1]
 
     def parse(self, response):
-
+        print('Start Airline Scrapping')
         reviews=response.xpath('//div[@class="wrap"]')
-
+        print(len(reviews))
         for review in reviews:
             title=review.xpath('.//div/a/span/text()').extract_first()
             rating=review.xpath('.//div[@class="rating reviewItemInline"]/span/@class').extract_first()
