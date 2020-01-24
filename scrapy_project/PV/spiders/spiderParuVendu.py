@@ -1,20 +1,12 @@
 import scrapy
+from PV.spiders import get_info
+from ..items import PVItem
 
-def isin_rep(rep, val='p'):
-
-    p = [i for i in rep if val in i ]
-    if len(p) ==1:
-        p = p[0].split(' ')[0]
-    else:
-        p = None
-    return p
-
-
-class QuotesSpiderPV(scrapy.Spider):
+class SpiderPV(scrapy.Spider):
     name = "spiderPV"
 
     def __init__(self, *args, **kwargs):
-        super(QuotesSpiderPV, self).__init__(*args, **kwargs)
+        super(SpiderPV, self).__init__(*args, **kwargs)
 
         # Parse URL
         self.start_urls = [kwargs.get('start_url')]
@@ -35,82 +27,52 @@ class QuotesSpiderPV(scrapy.Spider):
     def parse(self, response):
 
         website = 'https://www.paruvendu.fr'
-        pv_items = response.css('div.ergov3-annonce')
+        pv_items = get_info.get_items(response)
 
-        # Attention si l'on prend aussi les appartements neuf, on se rediriege vers un autre site
+        # Attention si l'on prend aussi les appartements neuf, on se redirige vers un autre site
         # neuf.seloger.com => L'adresse url est différente et l'id aussi. On se retrouve avec des trucs bizarres en base
-        # faire attention à bien filtrer uniquement sur les appartements ancie
+        # faire attention à bien filtrer uniquement sur les appartements ancien
         # NB : pas de garde fou dans le code.
 
         for pv_item in pv_items:
             try:
-                print('*' * 50)
-                print('> START ITEM')
-                prix = pv_item.css('div.ergov3-priceannonce::text').extract()[1].split('\n')[1].split('€')[0]
-                titre = pv_item.css('div.ergov3-annonce a:nth-child(2)::attr(title)').extract_first()
-                # titre = pv_item.css('a.voirann::attr(title)').extract_first()
+
+                # Get identificators
+                url = get_info.get_url(pv_item)
+                url = '{}{}'.format(website, url)
+                id_ = url.split('/')[-1]
+                print('*' * 25, 'START ITEM : ', id_, '*' * 25)
+
+                # Get basic data
+                titre = get_info.get_titre(pv_item)
                 surface = titre.split('-')[-1].split(' ')[1]
                 nb_pieces = int(titre.split('-')[-2].split(' ')[1])
-                ville_cp = pv_item.css('div.ergov3-txtannonce cite').extract_first()
+
+                # Get localisation information
+                ville_cp = get_info.get_ville_cp(pv_item)
                 ville_cp = ville_cp.split('\n')[1]
                 ville = ville_cp.split(' ')[0]
                 code_postal = ville_cp.split(' ')[1][1:-2]
-                nb_pict = pv_item.css('span.re14_nbphotos::text').extract_first()
-                agence = pv_item.css('div.ergov3-bottomannonce div img::attr(alt)').extract_first()
-                small_description = pv_item.css('div.ergov3-txtannonce p::text').extract()
-                url = pv_item.css('a.voirann::attr(href)').extract_first()
-                url = '{}{}'.format(website, url)
-                id_ = url.split('/')[-1]
-                print('> Compute final item')
 
-                final_item = {
-                    'titre': titre,
-                    'id_': id_,
-                    'prix': prix,
-                    'surface': surface,
-                    'ville': ville,
-                    'code_postal': code_postal,
-                    'nb_pieces': nb_pieces,
-                    'nb_pict': nb_pict,
-                    'agence': agence,
-                    'url': url
-                }
+                # Compute final item
+                item = PVItem()
+                item['titre'] = titre
+                item['id_'] = id_
+                item['prix'] = get_info.get_prix(pv_item)
+                item['surface'] = surface
+                item['ville'] = ville
+                item['code_postal'] = code_postal
+                item['nb_pieces'] = nb_pieces
+                item['nb_pict'] = get_info.get_nb_pict(pv_item)
+                item['agence'] = get_info.get_agence(pv_item)
+                item['url'] = url
+                # item['small_decr']  = get_info.get_small_description(pv_item)
+                yield item
 
-                # print(final_item)
-                print('> END ITEM')
-
-                yield final_item
             except:
-                print('>>>> BUG !!!')
-                print('Peut etre un appartement neuf')
+                print('>> BUG : Peut etre un appartement neuf')
 
         print('> Dealing with next page.')
-        next_page = response.css('div.pv15-pagsuiv ::attr(href)').extract()[-1]
-        next_page_number = int(next_page.split('&p=')[-1]) if len(next_page.split('&p=')) > 0 else None
-
-        if next_page is None:
-            print(' - There is no next_page')
-        else:
-            print(' - There is a next_page')
-            print(' - Page url is : {}'.format(next_page))
-            if self.max_page is None:
-                print(' - There is no number of page restriction. Go on.')
-                yield response.follow(next_page, callback=self.parse)
-            else:
-                print(' - Max page number is : {}'.format(self.max_page))
-                if next_page_number is None:
-                    print(' -  No next number page : STOP.')
-                else:
-                    print(' - Next page number is {}'.format(next_page_number))
-                    if int(next_page_number) <= int(self.max_page):
-                        print(' - It is smaller than limit. Go on.')
-                        yield response.follow(next_page, callback=self.parse)
-                    else:
-                        print('LIMIT was reached. STOP.')
-
-        # titre = response.css('span.c-pa-pprice::text').extract_first()
-        # titre = [tit for tit in titre.split(' ') if len(tit)>2]
-        # filename = 'SL_test.txt'
-        # with open(filename, 'wb') as f:
-        #     f.write(response.body)
-        # self.log('Saved file %s' % filename)
+        next_page, next_page_number = get_info.get_next_list_of_annonces(response)
+        if get_info.go_to_next_page(next_page, next_page_number, self.max_page):
+            yield response.follow(next_page, callback=self.parse)
