@@ -10,11 +10,11 @@ def isin_rep(rep, val='p'):
     return p
 
 
-class QuotesSpider(scrapy.Spider):
+class QuotesSpiderPV(scrapy.Spider):
     name = "spiderPV"
 
     def __init__(self, *args, **kwargs):
-        super(QuotesSpider, self).__init__(*args, **kwargs)
+        super(QuotesSpiderPV, self).__init__(*args, **kwargs)
 
         # Parse URL
         self.start_urls = [kwargs.get('start_url')]
@@ -65,7 +65,7 @@ class QuotesSpider(scrapy.Spider):
 
                 final_item = {
                     'titre': titre,
-                    'annonce': id_,
+                    'id_': id_,
                     'prix': prix,
                     'surface': surface,
                     'ville': ville,

@@ -10,11 +10,11 @@ def isin_rep(rep, val='p'):
     return p
                 
 
-class QuotesSpider(scrapy.Spider):
+class QuotesSpiderSL(scrapy.Spider):
     name = "spiderSL"
 
     def __init__(self, *args, **kwargs): 
-        super(QuotesSpider, self).__init__(*args, **kwargs) 
+        super(QuotesSpiderSL, self).__init__(*args, **kwargs)
         
         # Parse URL
         self.start_urls = [kwargs.get('start_url')] 
@@ -37,13 +37,16 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
       
         sl_items = response.css('div.c-pa-list')
-      
+        print('COUOCU POPTO ZEROOOO')
+        sl_items = response.xpath('//div[contains(@class,"block_ShadowedBlock")]/')
+        print(len(sl_items))
         # Attention si l'on prend aussi les appartements neuf, on se rediriege vers un autre site
         # neuf.seloger.com => L'adresse url est différente et l'id aussi. On se retrouve avec des trucs bizarres en base
         # faire attention à bien filtrer uniquement sur les appartements ancie
         # NB : pas de garde fou dans le code.
-
+        print('COUCOU POTO')
         for sl_item in sl_items:
+            print('>>> SL ITEM')
             try:
                 # Info annonce
                 nb_pict = sl_item.css('span.media-count::text').extract_first()
@@ -89,7 +92,7 @@ class QuotesSpider(scrapy.Spider):
 
                 final_item = {
                 'titre':titre,
-                'annonce':id_,
+                'id_':id_,
                 'prix': prix,
                 'surface': surface,
                 'ville':ville,

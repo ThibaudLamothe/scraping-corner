@@ -1,5 +1,6 @@
 # Imports
 import os
+import sys
 import time
 import numpy as np
 
@@ -67,7 +68,33 @@ def get_booking():
     return file_name, spider_name, project_name
 
 
+def dispatcher(name):
+    switcher = {
+        'LBC': get_LBC,
+        'TA': get_TA,
+        3: "March",
+        4: "April",
+        5: "May",
+        6: "June",
+        7: "July",
+        8: "August",
+        9: "September",
+        10: "October",
+        11: "November",
+        12: "December"
+    }
+    my_function = switcher.get(name, "Invalid Spider")
+    return my_function
+
+
 if __name__ == "__main__":
+    print(sys.argv)
+    # Get eventual arguments
+    get_parameters = None
+    for arg in sys.argv:
+        get_parameters = dispatcher('LBC')
+    if get_parameters is None:
+        get_parameters = get_booking
 
     # Start script
     print('Start scrapping. (Be sure that Scrapy is locally installed in your environment)')
@@ -77,7 +104,7 @@ if __name__ == "__main__":
         os.mkdir('../scrapped_data')
 
     # Parameters selection
-    file_, spider, project = get_booking()
+    file_, spider, project = get_parameters()
     os.environ['SCRAPY_PROJECT'] = project
 
     # Execution of spider
