@@ -94,6 +94,7 @@ if __name__ == "__main__":
     # Prepare storage
     if 'scrapped_data' not in os.listdir('../'):
         os.mkdir('../scrapped_data')
+        os.mkdir('../scrapped_data/corner_test')
 
     # Parameters selection
     file_, spider, project = get_parameters()
@@ -101,6 +102,6 @@ if __name__ == "__main__":
 
     # Execution of spider
     start_time = time.time()
-    cmd = 'scrapy crawl {} -o ../scrapped_data/{}'.format(spider, file_)
+    cmd = 'scrapy crawl {} -o ../scrapped_data/corner_test/{}'.format(spider, file_)
     os.system(cmd)
     print_execution_time(start_time)

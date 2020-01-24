@@ -3,12 +3,14 @@ __pycache__
 .DS_Store
 .ipynb_checkpoints
 .vscode
+.idea
 *.pyc
 
 # Data
 *.json
 *.jl
 data
+notebook
 old_data
 scrapped_data
 
