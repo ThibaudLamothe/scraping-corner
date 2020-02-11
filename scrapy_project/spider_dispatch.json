@@ -1,0 +1,52 @@
+{
+  "EXP": {
+    "file_name": "amazon_corner.jl",
+    "spider_name": "AmazonSpider",
+    "project_name": "Amazon"
+  },
+  "AMZ": {
+    "file_name": "amazon_corner.jl",
+    "spider_name": "AmazonSpider",
+    "project_name": "Amazon"
+  },
+  "LBC": {
+    "file_name": "LBC_corner.jl",
+    "spider_name": "spiderLBC",
+    "project_name": "LBC"
+  },
+  "SL": {
+    "file_name": "SL_corner.jl",
+    "spider_name": "spiderSL",
+    "project_name": "SL"
+  },
+  "TA": {
+    "file_name": "TA_corner.jl",
+    "spider_name": "spiderTA",
+    "project_name": "TA"
+  },
+  "PV": {
+    "file_name": "PV_corner.jl",
+    "spider_name": "spiderPV",
+    "project_name": "PV"
+  },
+  "Xba": {
+    "file_name": "X_basic_corner.jl",
+    "spider_name": "actuX_basic",
+    "project_name": "XHEC"
+  },
+  "TAR": {
+    "file_name": "TA_airline_corner.jl",
+    "spider_name": "airlineTA",
+    "project_name": "TA"
+  },
+  "BOK": {
+    "file_name": "booking_corner.jl",
+    "spider_name": "BookingSpider",
+    "project_name": "Booking"
+  },
+  "TrP": {
+    "file_name": "TP_corner.jl",
+    "spider_name": "pilot",
+    "project_name": "TrustPilot"
+  }
+}

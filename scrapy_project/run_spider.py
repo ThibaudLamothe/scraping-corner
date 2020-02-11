@@ -1,10 +1,12 @@
 # Imports
 import os
-import sys
+import json
 import time
+import argparse
 import numpy as np
 
 
+# To evaluate scraping execution time
 def print_execution_time(start):
     now = time.time()
     duree = now - start
@@ -12,98 +14,29 @@ def print_execution_time(start):
     print('Durée : {} min.'.format(duree_min))
 
 
-def get_LBC():
-    file_name = 'LBC_corner.jl'
-    spider_name = 'spiderLBC'
-    project_name = 'LBC'
+# To parse which spider is called
+def get_sigle():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--spider", help="Define the sigle to get into the config file")
+    args = parser.parse_args()
+    if args.spider:
+        return args.spider
+    return "EXP"
+
+# To get the config of the spider to call
+def get_config(dispatcher_path, sigle):
+    with open(dispatcher_path) as json_file:
+        data = json.load(json_file)
+    if sigle not in data.keys():
+        return None, None, None
+
+    file_name = data[sigle]['file_name']
+    spider_name = data[sigle]['spider_name']
+    project_name = data[sigle]['project_name']
     return file_name, spider_name, project_name
-
-
-def get_SL():
-    file_name = 'SL_corner.jl'
-    spider_name = 'spiderSL'
-    project_name = 'SL'
-    return file_name, spider_name, project_name
-
-
-def get_TA():
-    file_name = 'TA_corner.jl'
-    spider_name = 'spiderTA'
-    project_name = 'TA'
-    return file_name, spider_name, project_name
-
-
-def get_PV():
-    file_name = 'PV_corner.jl'
-    spider_name = 'spiderPV'
-    project_name = 'PV'
-    return file_name, spider_name, project_name
-
-
-def get_X_basic():
-    file_name = 'actu_x_summary_2.jl'
-    spider_name = 'actuX_basic'
-    project_name = 'XHEC'
-    return file_name, spider_name, project_name
-
-
-def get_TrustPilot():
-    file_name = 'TP_corner.jl'
-    spider_name = 'pilot'
-    project_name = 'TrustPilot'
-    return file_name, spider_name, project_name
-
-
-def get_TA_airline():
-    file_name = 'TA_airline_corner.jl'
-    spider_name = 'airlineTA'
-    project_name = 'TA'
-    return file_name, spider_name, project_name
-
-
-def get_booking():
-    file_name = 'booking_corner.jl'
-    spider_name = 'BookingSpider'
-    project_name = 'Booking'
-    return file_name, spider_name, project_name
-
-
-def get_amazon():
-    file_name = 'amazon_corner.jl'
-    spider_name = 'AmazonSpider'
-    project_name = 'Amazon'
-    return file_name, spider_name, project_name
-
-def get_carrefour():
-    file_name = 'carrefour_corner.jl'
-    spider_name = 'CarrefourSpider'
-    project_name = 'Carrefour'
-    return file_name, spider_name, project_name
-
-
-
-
-def dispatcher(name):
-    switcher = {
-        'AMZ': get_amazon,
-        'LBC': get_LBC,
-        'TA': get_TA,
-        'PV': get_PV,
-        'SL': get_SL,
-        'CRF':get_carrefour
-    }
-    my_function = switcher.get(name, "Invalid Spider")
-    return my_function
 
 
 if __name__ == "__main__":
-    print(sys.argv)
-    # Get eventual arguments
-    get_parameters = None
-    for arg in sys.argv:
-        get_parameters = dispatcher('AMZ')
-    if get_parameters is None:
-        get_parameters = get_booking
 
     # Start script
     print('Start scrapping. (Be sure that Scrapy is locally installed in your environment)')
@@ -113,12 +46,21 @@ if __name__ == "__main__":
         os.mkdir('../scrapped_data')
         os.mkdir('../scrapped_data/corner_test')
 
-    # Parameters selection
-    file_, spider, project = get_parameters()
+    # Get the spiders parameters
+    file_, spider, project = get_config(
+        dispatcher_path='spider_dispatch.json',
+        sigle=get_sigle()
+    )
+
+    # Set os information for default scrapy project (link with the scrapy.cfg file)
     os.environ['SCRAPY_PROJECT'] = project
 
-    # Execution of spider
+    # Start chronometer
     start_time = time.time()
+
+    # Run spider
     cmd = 'scrapy crawl {} -o ../scrapped_data/corner_test/{}'.format(spider, file_)
     os.system(cmd)
+
+    # Display execution time
     print_execution_time(start_time)
