@@ -30,14 +30,13 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
     return False
 
 
-def isin_rep(rep, val='p'):
 
-    p = [i for i in rep if val in i ]
-    if len(p) ==1:
-        p = p[0].split(' ')[0]
-    else:
-        p = None
-    return p
+def print_separation(value):
+    print('*' * 60)
+    print('*' * 60)
+    print('Object number :', value)
+    print('*' * 60)
+    print('*' * 60)
 
 
 ################################################################################################
@@ -46,38 +45,57 @@ def isin_rep(rep, val='p'):
 ################################################################################################
 ################################################################################################
 
-def get_items(response):
-    return response.css('div.ergov3-annonce')
+def get_reference_links(response):
+    return response.css('h2').xpath('a[contains(@class, "a-link-normal a-text-normal")]/@href').extract()
 
 
-def get_prix(pv_item):
-    return pv_item.css('div.ergov3-priceannonce::text').extract()[1].split('\n')[1].split('€')[0]
 
 
-def get_titre(pv_item):
-    # titre = pv_item.css('a.voirann::attr(title)').extract_first()
-    return pv_item.css('div.ergov3-annonce a:nth-child(2)::attr(title)').extract_first()
+def get_main_pagination(response):
+    next_page = response.css('ul.a-pagination > li.a-last ::attr(href)').extract_first()
+    try:
+        page_number = next_page.split('_')[-1]
+        page_number = int(page_number)
+    except:
+        page_number = 100
+    return next_page, page_number
+################################################################################################
+################################################################################################
+#                                       Parsing a single referenec
+################################################################################################
+################################################################################################
 
+def get_prices(response):
+    price_1 = response.xpath('//h5//span[@class="a-color-price"]/text()').extract_first()
+    price_2 = response.xpath('//span[@id="priceblock_ourprice"]/text()').extract_first()
+    price_3 = response.xpath('//span[@id="priceblock_saleprice"]/text()').extract_first()
+    price_4 = response.xpath('//span[@id="newBuyBoxPrice"]/text()').extract_first()
+    price_5 = response.xpath('//div[@id="olp_feature_div"]//span/text()').extract_first()
+    return price_1, price_2, price_3, price_4, price_5
 
-def get_ville_cp(pv_item):
-    return pv_item.css('div.ergov3-txtannonce cite').extract_first()
+def get_title(response):
+    title = response.xpath('//span[@id="productTitle"]/text()').extract_first()
+    if title:
+        title = title.replace('\n', '').replace('  ', '')
+    return title
 
+def get_description(response):
+    description_1 = response.xpath('//div[contains(@id, "productDescription")]//p//text()').extract()
+    description_2 = response.xpath('//div[contains(@class, "launchpad-text-left-justify")]//text()').extract()
+    description = description_1 + description_2
+    description = ','.join(description).replace('  ', '').replace('\n', '')
+    return description
 
-def get_nb_pict(pv_item):
-    return pv_item.css('span.re14_nbphotos::text').extract_first()
+def get_items_description(response):
+    texts = response.css('div#feature-bullets').xpath('ul/li/span/text()').extract()
+    texts = [text.replace('\n', '').replace('\t', '') for text in texts]
+    items_description = ','.join(texts).replace('  ', '')
+    return items_description
 
-def get_agence(pv_item):
-    return pv_item.css('div.ergov3-bottomannonce div img::attr(alt)').extract_first()
+def get_category(response):
+    category = response.xpath('//ul[contains(@class, "a-unordered-list a-horizontal a-size-small")]//text()').extract()
+    category = [cat.replace('\n', '').replace('  ', '') for cat in category]
+    category = [cat for cat in category if len(cat) > 5]
+    category = ', '.join(category)
+    return category
 
-
-def get_small_description(pv_item):
-    return pv_item.css('div.ergov3-txtannonce p::text').extract()
-
-def get_url(pv_item):
-    return pv_item.css('a.voirann::attr(href)').extract_first()
-
-
-def get_next_list_of_annonces(response):
-    next_page = response.css('div.pv15-pagsuiv ::attr(href)').extract()[-1]
-    next_page_number = int(next_page.split('&p=')[-1]) if len(next_page.split('&p=')) > 0 else None
-    return next_page, next_page_number
