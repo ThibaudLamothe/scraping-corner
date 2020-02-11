@@ -30,15 +30,6 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
     return False
 
 
-def isin_rep(rep, val='p'):
-
-    p = [i for i in rep if val in i ]
-    if len(p) ==1:
-        p = p[0].split(' ')[0]
-    else:
-        p = None
-    return p
-
 
 ################################################################################################
 ################################################################################################
