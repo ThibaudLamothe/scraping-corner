@@ -8,6 +8,25 @@
 import scrapy
 
 
+class ReviewRestoItem(scrapy.Item):
+    id_resto = scrapy.Field()
+    id_comment = scrapy.Field()
+    resto = scrapy.Field()
+    resto_url = scrapy.Field()
+    rating = scrapy.Field()
+    title = scrapy.Field()
+    diner_date = scrapy.Field()
+    rating_date = scrapy.Field()
+    answer_text = scrapy.Field()
+    reviewer_pseudo = scrapy.Field()
+    reviewer_origin = scrapy.Field()
+    reviewer_info_sup = scrapy.Field()
+    other_ratings_category = scrapy.Field()
+    other_ratings_value = scrapy.Field()
+    url = scrapy.Field()
+    content = scrapy.Field()
+
+
 class RestoItem(scrapy.Item):
     url = scrapy.Field()
     id = scrapy.Field()
@@ -39,24 +58,6 @@ class RestoItem(scrapy.Item):
     rating_poor = scrapy.Field()
     rating_terrible = scrapy.Field()
 
-
-class ReviewRestoItem(scrapy.Item):
-    url = scrapy.Field()
-    id_resto = scrapy.Field()
-    id_comment = scrapy.Field()
-    resto = scrapy.Field()
-    resto_url = scrapy.Field()
-    rating = scrapy.Field()
-    title = scrapy.Field()
-    content = scrapy.Field()
-    diner_date = scrapy.Field()
-    rating_date = scrapy.Field()
-    answer_text = scrapy.Field()
-    reviewer_pseudo = scrapy.Field()
-    reviewer_origin = scrapy.Field()
-    reviewer_info_sup = scrapy.Field()
-    other_ratings_category = scrapy.Field()
-    other_ratings_value = scrapy.Field()
 
 
 class HotelReviewsItem(scrapy.Item):
