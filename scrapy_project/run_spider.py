@@ -68,12 +68,29 @@ def get_booking():
     return file_name, spider_name, project_name
 
 
+def get_amazon():
+    file_name = 'amazon_corner.jl'
+    spider_name = 'AmazonSpider'
+    project_name = 'Amazon'
+    return file_name, spider_name, project_name
+
+def get_carrefour():
+    file_name = 'carrefour_corner.jl'
+    spider_name = 'CarrefourSpider'
+    project_name = 'Carrefour'
+    return file_name, spider_name, project_name
+
+
+
+
 def dispatcher(name):
     switcher = {
+        'AMZ': get_amazon,
         'LBC': get_LBC,
         'TA': get_TA,
         'PV': get_PV,
-        'SL': get_SL
+        'SL': get_SL,
+        'CRF':get_carrefour
     }
     my_function = switcher.get(name, "Invalid Spider")
     return my_function
@@ -84,7 +101,7 @@ if __name__ == "__main__":
     # Get eventual arguments
     get_parameters = None
     for arg in sys.argv:
-        get_parameters = dispatcher('PV')
+        get_parameters = dispatcher('AMZ')
     if get_parameters is None:
         get_parameters = get_booking
 

@@ -1,4 +1,4 @@
-def go_to_next_page(next_page, next_page_number, max_page, printing=False):
+def go_to_next_page(next_page, next_page_number, max_page, printing=True):
     if next_page is None:
         if printing: print(' - There is no next_page')
     else:
