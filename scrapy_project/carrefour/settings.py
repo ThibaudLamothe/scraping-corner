@@ -30,7 +30,7 @@ LOG_LEVEL = 'WARNING'
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 10
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -53,6 +53,26 @@ DOWNLOAD_DELAY = 10
 #    'carrefour.middlewares.CarrefourSpiderMiddleware': 543,
 #}
 
+
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+
+
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+
+
+SPLASH_URL = 'http://localhost:8050'
+# SPLASH_URL = 'http://192.168.59.103:8050'
+# SPLASH_URL = 'http://127.17.0.1:8050'
+
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
@@ -70,6 +90,12 @@ DOWNLOAD_DELAY = 10
 #ITEM_PIPELINES = {
 #    'carrefour.pipelines.CarrefourPipeline': 300,
 #}
+
+# ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+#
+# IMAGES_STORE = '/Users/thibaud/Documents/Python_scripts/02_Projects/scraping_corner/scrapped_data/corner_test/carrefour_pic'
+
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

@@ -8,7 +8,13 @@
 import scrapy
 
 
-class CarrefourItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class ArticleItem(scrapy.Item):
+    description = scrapy.Field()
+    description2 = scrapy.Field()
+    titre = scrapy.Field()
+    soustitre = scrapy.Field()
+    similaire = scrapy.Field()
+    price = scrapy.Field()
+    position = scrapy.Field()
+    image_urls = scrapy.Field()
+    images = scrapy.Field()

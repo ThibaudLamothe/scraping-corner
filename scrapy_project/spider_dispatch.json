@@ -9,6 +9,11 @@
     "spider_name": "AmazonSpider",
     "project_name": "Amazon"
   },
+  "CRF": {
+    "file_name": "carrefour_corner.jl",
+    "spider_name": "CarrefourSpider",
+    "project_name": "carrefour"
+  },
   "LBC": {
     "file_name": "LBC_corner.jl",
     "spider_name": "spiderLBC",

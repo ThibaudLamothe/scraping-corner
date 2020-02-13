@@ -1,14 +1,9 @@
 import scrapy
+from carrefour.spiders import get_info
+from carrefour.items import ArticleItem
+from scrapy_splash import SplashRequest
 
-import scrapy
-# from scrapy_TA.spiders import get_info
-# from scrapy_TA.items import RestoItem
-
-import logging
-import logzero
 from logzero import logger
-
-import time
 
 class SpiderCarrefour(scrapy.Spider):
     name = "CarrefourSpider"
@@ -16,13 +11,6 @@ class SpiderCarrefour(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(SpiderCarrefour, self).__init__(*args, **kwargs)
-
-        # Parse URL
-        self.start_urls = [kwargs.get('start_url')]
-        if self.start_urls == [None]:
-            self.start_urls =[
-                'https://www.carrefour.fr/'
-            ]
 
         # Parse max_page
         self.max_page = kwargs.get('max_page')
@@ -34,74 +22,56 @@ class SpiderCarrefour(scrapy.Spider):
 
 
     def start_requests(self):
-        for url in self.start_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+
+        # Defining the number of pages to scrap
+        nb_articles = 7856
+        nb_article_par_page = 60
+        nb_page = int(nb_articles / nb_article_par_page)
+        nb_page = 2
+
+        # Going to each pages
+        for page in range(1, nb_page + 1):
+            url = '> Start request : https://www.carrefour.fr/r?page={}'.format(page)
+            logger.warn(url)
+            yield SplashRequest(url=url, callback=self.parse) #, args={'wait':10})
+
 
     def parse(self, response):
+        self.page +=1
+        logger.error('> Pages loaded {}'.format(self.page))
 
-        # view(response)
+        # Extracting product links on articles page
+        urls = get_info.get_links(response)
+        for url in urls:
+            url = 'https://www.carrefour.fr' + url
+            logger.error('> Rayon page - url : {}'.format(url))
 
+            yield SplashRequest(url=url, callback=self.parse_article) #, args={'wait':5})
 
-        css_selector = 'li.nav-item'
-        rayons = response.css(css_selector)
-        len(rayons)
-
-
-
-
-        ####################################################
-        ####################################################
-        ####################################################
-        ####################################################
-        ####################################################
-
-        # Getting rayons list
-        liste = response.css('li.nav-item ::text').extract()
-        logger.warn('List complete {}'.format(len(liste)))
-        logger.warn('List complete {}'.format(liste))
-
-        # Preaparong rayons fur sub analysis
-        css_selector = 'li.nav-item'
-        rayons = response.css(css_selector)
-        logger.warn('Nb rayon {}'.format(len(rayons)))
-
-        for rayon in rayons[2:4]:
-            # Rayon information
-            name = rayon.css(' ::text').extract()
-            logger.warn('> rayon'.format(name))
-            lien = rayon.css(' a ::attr(href)').extract()
-            logger.warn('> lien'.format(lien))
-
-            #  Try to eextract subrayon information
-            # subrayon = rayon.css('ul > li.nav-item > a ::text').extract()
-
-
-            yield response.follow(lien, callback=self.parse_rayon)
-            # yield {'name': name, 'lien': lien, 'subrayon':subrayon}
-
-        # filename = 'quotes-%s.html'
-        # with open(filename, 'wb') as f:
-        #     f.write(response.body)
-        # self.log('Saved file %s' % filename)
-
-
-
-
-    def parse_rayon(self, response):
-        logger.error('In here {}'.format(response.url))
-        subrayon = response.css(' div.ds-carousel__item ::text').extract()
-        yield {'subrayon':subrayon}
-
-
-
-    def parse_sub_rayon(self, response):
-        subrayon = response.css('div.ds-carousel__item ::text').extract()
-        yield {'subrayon':subrayon}
-
-    def parse_sub_sub_rayon(self, response):
-        subrayon = response.css('div.ds-carousel__item ::text').extract()
-        yield {'subrayon':subrayon}
 
     def parse_article(self, response):
-        article = None
-        yield article
+        self.object += 1
+        logger.error('> Articles scrapped {}'.format(self.object))
+
+        item = ArticleItem()
+
+        logger.debug('staaart')
+
+        item['description'] = get_info.get_description(response)
+        item['description2'] = get_info.get_description2(response)
+        item['titre'] = get_info.get_titre(response)
+        item['soustitre'] = get_info.get_soustitre(response)
+        item['similaire'] = get_info.get_similaire(response)
+        item['price'] = get_info.get_price(response)
+        logger.debug('ON EST ICI LES POTOS')
+        # item['image_urls'] = get_info.get_picture_url(response)
+        item['position'] = get_info.get_position(response)
+
+        for key, value in item.items():
+            logger.warn(key)
+            logger.warn(value)
+        yield item
+
+
+
+
