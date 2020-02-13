@@ -17,4 +17,5 @@ class ArticleItem(scrapy.Item):
     price = scrapy.Field()
     position = scrapy.Field()
     image_urls = scrapy.Field()
-    images = scrapy.Field()
+    image_name = scrapy.Field()
+    # images = scrapy.Field()

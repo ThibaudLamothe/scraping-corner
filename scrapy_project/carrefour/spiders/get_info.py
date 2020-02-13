@@ -32,6 +32,11 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
     return False
 
 
+# filename = 'test_html_{}.html'.format(self.page)
+# with open(filename, 'wb') as f:
+#     f.write(response.body)
+# # self.log('Saved file %s' % filename)
+
 
 ################################################################################################
 ################################################################################################
@@ -40,10 +45,19 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
 ################################################################################################
 
 def get_links(response):
+
     css_selector = 'ul.product-grid > li.product-grid-item article div div a ::attr(href)'
+    # logger.debug(css_selector)
+
     links = response.css(css_selector).extract()
+    # logger.debug(len(links))
+
     links = set(links)
+    # logger.debug(links)
+
     links = [link for link in links if '/p/' in link]
+
+
     return links
 
 

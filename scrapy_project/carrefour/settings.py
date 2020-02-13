@@ -25,12 +25,13 @@ ROBOTSTXT_OBEY = False
 LOG_LEVEL = 'WARNING'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 4
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 1
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -66,7 +67,7 @@ SPIDER_MIDDLEWARES = {
 }
 
 
-SPLASH_URL = 'http://localhost:8050'
+SPLASH_URL = 'http://localhost:8050/'
 # SPLASH_URL = 'http://192.168.59.103:8050'
 # SPLASH_URL = 'http://127.17.0.1:8050'
 
@@ -92,9 +93,18 @@ HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 #}
 
 # ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+
+# ITEM_PIPELINES = {'carrefour.pipelines.CustomImageNamePipeline': 1}
+#
 #
 # IMAGES_STORE = '/Users/thibaud/Documents/Python_scripts/02_Projects/scraping_corner/scrapped_data/corner_test/carrefour_pic'
+#
 
+# IMAGES_STORE = 'images'
+# IMAGES_THUMBS = {
+#     'small': (40, 40),
+#     'big': (250, 250),
+# }
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
