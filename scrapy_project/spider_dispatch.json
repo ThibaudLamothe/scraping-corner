@@ -5,7 +5,7 @@
     "project_name": "Amazon"
   },
   "AMZ": {
-    "file_name": "amazon_corner.jl",
+    "file_name": "amazon_corner_sports.jl",
     "spider_name": "AmazonSpider",
     "project_name": "Amazon"
   },
@@ -27,6 +27,11 @@
   "TA": {
     "file_name": "TA_corner.jl",
     "spider_name": "spiderTA",
+    "project_name": "TA"
+  },
+  "TA6": {
+    "file_name": "grp6.jl",
+    "spider_name": "grp6",
     "project_name": "TA"
   },
   "PV": {

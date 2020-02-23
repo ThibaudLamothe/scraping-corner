@@ -6,7 +6,7 @@ import pandas as pd
 def read_jl_file(file_name):
     values = []
     with open(file_name, 'rb') as f:
-        line = ''
+        line = '---'
         while len(line) > 1:
             line = f.readline()
             values.append(line)
