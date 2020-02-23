@@ -18,27 +18,11 @@ class SpiderAmazon(scrapy.Spider):
         self.start_urls = [kwargs.get('start_url')]
         if self.start_urls == [None]:
 
-            # Luggage urls for Hackathon
-            self.start_urls = [
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743251%2Cn%3A15743261&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=d51650ff-60b4-4a83-9258-120554589089&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-4&pf_rd_t=101&ref=s9_acss_bw_cts_AELugg_T1_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A360832011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=d51650ff-60b4-4a83-9258-120554589089&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-4&pf_rd_t=101&ref=s9_acss_bw_cts_AELugg_T2_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743251%2Cn%3A15743271%2Cp_n_feature_eighteen_browse-bin%3A14630392011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=d51650ff-60b4-4a83-9258-120554589089&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-4&pf_rd_t=101&ref=s9_acss_bw_cts_AELugg_T3_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743241%2Cp_n_feature_eighteen_browse-bin%3A14630392011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=d51650ff-60b4-4a83-9258-120554589089&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-4&pf_rd_t=101&ref=s9_acss_bw_cts_AELugg_T4_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743251%2Cn%3A15743291&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=af558cb9-78a8-43e7-9cb3-a8cd207ee9af&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-5&pf_rd_t=101&ref=s9_acss_bw_cts_AELug3_T1_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A9971584011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=af558cb9-78a8-43e7-9cb3-a8cd207ee9af&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-5&pf_rd_t=101&ref=s9_acss_bw_cts_AELug3_T2_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743251%2Cn%3A2477388011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=af558cb9-78a8-43e7-9cb3-a8cd207ee9af&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-5&pf_rd_t=101&ref=s9_acss_bw_cts_AELug3_T3_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743251%2Cn%3A2477386011&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=af558cb9-78a8-43e7-9cb3-a8cd207ee9af&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-5&pf_rd_t=101&ref=s9_acss_bw_cts_AELug3_T4_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743231&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=fec43364-79a8-4f31-85ab-1ad18ec49011&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-6&pf_rd_t=101&ref=s9_acss_bw_cts_AELug2_T1_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15744111&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=fec43364-79a8-4f31-85ab-1ad18ec49011&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-6&pf_rd_t=101&ref=s9_acss_bw_cts_AELug2_T2_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743211&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=fec43364-79a8-4f31-85ab-1ad18ec49011&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-6&pf_rd_t=101&ref=s9_acss_bw_cts_AELug2_T3_w',
-                'https://www.amazon.com/s?i=fashion-luggage&bbn=16225017011&rh=n%3A7141123011%2Cn%3A16225017011%2Cn%3A15743971&pf_rd_i=16225017011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=fec43364-79a8-4f31-85ab-1ad18ec49011&pf_rd_r=T0EBQZCJSG27SK4F0VHF&pf_rd_s=merchandised-search-6&pf_rd_t=101&ref=s9_acss_bw_cts_AELug2_T4_w'
-            ]
-
             # Categories url for Hackathon
             self.start_urls = [
-                'https://www.amazon.com/s?i=electronics-intl-ship&rh=n%3A%2116225009011&page=2&qid=1581437527&ref=lp_16225009011_pg_2', # electronics
-                'https://www.amazon.com/s?i=videogames-intl-ship&rh=n%3A%2116225016011&page=2&qid=1581437762&ref=lp_16225016011_pg_2', # videogames
-                'https://www.amazon.com/s?i=pets-intl-ship&rh=n%3A%2116225013011&page=2&qid=1581438170&ref=lp_16225013011_pg_2', # pet supplies
+                # 'https://www.amazon.com/s?i=electronics-intl-ship&rh=n%3A%2116225009011&page=2&qid=1581437527&ref=lp_16225009011_pg_2', # electronics
+                # 'https://www.amazon.com/s?i=videogames-intl-ship&rh=n%3A%2116225016011&page=2&qid=1581437762&ref=lp_16225016011_pg_2', # videogames
+                # 'https://www.amazon.com/s?i=pets-intl-ship&rh=n%3A%2116225013011&page=2&qid=1581438170&ref=lp_16225013011_pg_2', # pet supplies
                 'http://amazon.com/s?i=sporting-intl-ship&rh=n%3A%2116225014011&page=2&qid=1581438225&ref=lp_16225014011_pg_2' # sports & outdoors
             ]
 
@@ -107,6 +91,7 @@ class SpiderAmazon(scrapy.Spider):
         item['titre'] = title
         item['items'] = items_description
         item['description'] = description
+        item['url'] = response.url
 
         # Display results
         for key, value in item.items():

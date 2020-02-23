@@ -20,3 +20,4 @@ class AmazonItem(scrapy.Item):
     titre = scrapy.Field()
     items = scrapy.Field()
     description = scrapy.Field()
+    url = scrapy.Field()

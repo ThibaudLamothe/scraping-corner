@@ -93,7 +93,7 @@ def get_items_description(response):
     return items_description
 
 def get_category(response):
-    category = response.xpath('//ul[contains(@class, "a-unordered-list a-horizontal a-size-small")]//text()').extract()
+    category = response.xpath('//ul[contains(@class, "a-unordered-list a-horizontal a-size-small")]//li//text()').extract()
     category = [cat.replace('\n', '').replace('  ', '') for cat in category]
     category = [cat for cat in category if len(cat) > 5]
     category = ', '.join(category)
