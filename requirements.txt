@@ -4,6 +4,11 @@ pandas==0.24.0
 
 # Specific
 scrapy
+scrapy-splash
+selenium
+
+#
+Pillow
 
 # Dev env
 jupyter

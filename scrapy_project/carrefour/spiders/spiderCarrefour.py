@@ -17,6 +17,10 @@ logzero.loglevel(logging.INFO)
 ################################################################
 ################################################################
 
+# Carrefour's website use javascript,
+# which is not well tackled by scrapy
+# Then we use splash to load the full webpages
+
 # Documentation
 # https://splash.readthedocs.io/en/stable/install.html
 
@@ -26,6 +30,7 @@ logzero.loglevel(logging.INFO)
 
 # Blog explanation
 # http://scrapingauthority.com/scrapy-javascript
+# pip install scrapy-splash
 
 ################################################################
 ################################################################
@@ -55,14 +60,14 @@ class SpiderCarrefour(scrapy.Spider):
         nb_articles = 7856
         nb_article_par_page = 60
         nb_page = int(nb_articles / nb_article_par_page)
-        nb_page = 2
+        # nb_page = 2
 
         # Going to each pages
         for page in range(1, nb_page + 1):
             url = 'https://www.carrefour.fr/r?page={}'.format(page)
             logger.warn(url)
 
-            yield SplashRequest(url=url, callback=self.parse)
+            yield SplashRequest(url=url, callback=self.parse, args={'wait':5})
 
 
     def parse(self, response):
@@ -77,17 +82,18 @@ class SpiderCarrefour(scrapy.Spider):
         # Going to the articles pages
         for url in urls:
             url = 'https://www.carrefour.fr' + url
-            yield SplashRequest(url=url, callback=self.parse_article) #, args={'wait':5})
+            yield SplashRequest(url=url, callback=self.parse_article, args={'wait':10})
 
 
     def parse_article(self, response):
 
         # Displaying parsing information
         self.object += 1
-        logger.error('> Articles scrapped {}'.format(self.object))
+        logger.warn('> Articles scrapped {}'.format(self.object))
 
         # Creating item with scraped information
         item = ArticleItem()
+
         item['description'] = get_info.get_description(response)
         item['description2'] = get_info.get_description2(response)
         item['titre'] = get_info.get_titre(response)
@@ -96,6 +102,7 @@ class SpiderCarrefour(scrapy.Spider):
         item['price'] = get_info.get_price(response)
         item['image_urls'] = get_info.get_picture_url(response)
         item['position'] = get_info.get_position(response)
+        item['url'] = response.url
 
         # Depending on loglevel, display key/values
         for key, value in item.items():
