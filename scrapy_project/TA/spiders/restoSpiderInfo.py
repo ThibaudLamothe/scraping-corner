@@ -20,7 +20,29 @@ class restoTAinfo(scrapy.Spider):
         self.start_urls = [kwargs.get('start_url')]
         if self.start_urls == [None]:
             self.start_urls = [
-                'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html'  # zone
+                # scrapy shell https://www.tripadvisor.fr/Restaurants-g187070-France.html
+                # css = 'div.geo_name a ::attr(href)' 
+                #
+                # 'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html'  # zone
+                'https://www.tripadvisor.fr/Restaurants-g187265-Lyon_Rhone_Auvergne_Rhone_Alpes.html',
+                'https://www.tripadvisor.fr/Restaurants-g187079-Bordeaux_Gironde_Nouvelle_Aquitaine.html',
+                'https://www.tripadvisor.fr/Restaurants-g187139-Corsica.html',
+                'https://www.tripadvisor.fr/Restaurants-g187253-Marseille_Bouches_du_Rhone_Provence_Alpes_Cote_d_Azur.html',
+                'https://www.tripadvisor.fr/Restaurants-g187175-Toulouse_Haute_Garonne_Occitanie.html',
+                'https://www.tripadvisor.fr/Restaurants-g187234-Nice_French_Riviera_Cote_d_Azur_Provence_Alpes_Cote_d_Azur.html',
+                'https://www.tripadvisor.fr/Restaurants-g187178-Lille_Nord_Hauts_de_France.html',
+                'https://www.tripadvisor.fr/Restaurants-g187075-Strasbourg_Bas_Rhin_Grand_Est.html',
+                'https://www.tripadvisor.fr/Restaurants-g187153-Montpellier_Herault_Occitanie.html',
+                'https://www.tripadvisor.fr/Restaurants-g187198-Nantes_Loire_Atlantique_Pays_de_la_Loire.html',
+                'https://www.tripadvisor.fr/Restaurants-g187264-Grenoble_Isere_Auvergne_Rhone_Alpes.html',
+                'https://www.tripadvisor.fr/Restaurants-g187209-Aix_en_Provence_Bouches_du_Rhone_Provence_Alpes_Cote_d_Azur.html',
+                'https://www.tripadvisor.fr/Restaurants-g187103-Rennes_Ille_et_Vilaine_Brittany.html',
+                'https://www.tripadvisor.fr/Restaurants-g187221-Cannes_French_Riviera_Cote_d_Azur_Provence_Alpes_Cote_d_Azur.html',
+                'https://www.tripadvisor.fr/Restaurants-g187191-Rouen_Seine_Maritime_Haute_Normandie_Normandy.html',
+                'https://www.tripadvisor.fr/Restaurants-g187212-Avignon_Vaucluse_Provence_Alpes_Cote_d_Azur.html',
+                'https://www.tripadvisor.fr/Restaurants-g187130-Tours_Indre_et_Loire_Centre_Val_de_Loire.html',
+                'https://www.tripadvisor.fr/Restaurants-g187091-Clermont_Ferrand_Puy_de_Dome_Auvergne_Rhone_Alpes.html',
+                'https://www.tripadvisor.fr/Restaurants-g187111-Dijon_Cote_d_Or_Bourgogne_Franche_Comte.html'
             ]
 
         # Parse max_page
