@@ -36,7 +36,8 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
 ################################################################################################
 
 def get_urls_resto_in_main_search_page(response):
-    return response.css('a.restaurants-list-ListCell__restaurantName--2aSdo ::attr(href)').extract()
+    #return response.css('a.restaurants-list-ListCell__restaurantName--2aSdo ::attr(href)').extract()
+    return response.xpath('//*[@class="_15_ydu6b"]').css('::attr(href)').extract()
 
 
 def get_urls_reviews_in_restaurant_page(reviews):

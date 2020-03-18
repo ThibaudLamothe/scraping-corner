@@ -2,6 +2,8 @@
 import scrapy
 from Amazon.spiders import get_info
 from Amazon.items import AmazonItem
+# from scrapy_splash import SplashRequest
+
 
 # Logging import
 import logzero
@@ -39,6 +41,7 @@ class SpiderAmazon(scrapy.Spider):
     def start_requests(self):
         for url in self.start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
+            # yield SplashRequest(url=url, callback=self.parse, args={'wait':2})
 
 
     def parse(self, response):
@@ -52,13 +55,19 @@ class SpiderAmazon(scrapy.Spider):
         # Follow these urls
         for link in links:
             yield response.follow(url=link, callback=self.parse_reference)
+            # link = 'https://www.amazon.com' + link
+            # yield SplashRequest(url=link, callback=self.parse_reference, args={'wait':5})
+
 
         # Get pagination information
         next_page, page_number = get_info.get_main_pagination(response)
 
         # Decision to follow a page or not
-        if page_number <= 5:
+        if page_number <= 120:
             yield response.follow(next_page, callback=self.parse)
+            # next_page = 'https://www.amazon.com' + next_page
+            # yield SplashRequest(url=next_page, callback=self.parse, args={'wait':10})
+
 
 
     def parse_reference(self, response):
@@ -88,6 +97,7 @@ class SpiderAmazon(scrapy.Spider):
         item['price_4'] = price_4
         item['price_5'] = price_5
         item['category'] = category
+        item['choice_scrap'] = 'sports'
         item['titre'] = title
         item['items'] = items_description
         item['description'] = description

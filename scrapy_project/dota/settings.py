@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for Amazon project
+# Scrapy settings for dota project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,29 +9,25 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'Amazon'
+BOT_NAME = 'dota'
 
-SPIDER_MODULES = ['Amazon.spiders']
-NEWSPIDER_MODULE = 'Amazon.spiders'
+SPIDER_MODULES = ['dota.spiders']
+NEWSPIDER_MODULE = 'dota.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+#USER_AGENT = 'dota (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
-
-LOG_LEVEL = 'WARNING'
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 2
-CONCURRENT_REQUESTS = 10
+#CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.2
-# DOWNLOAD_DELAY = 2
+#DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -51,38 +47,14 @@ DOWNLOAD_DELAY = 0.2
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'Amazon.middlewares.AmazonSpiderMiddleware': 543,
+#    'dota.middlewares.DotaSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'Amazon.middlewares.AmazonDownloaderMiddleware': 543,
+#    'dota.middlewares.DotaDownloaderMiddleware': 543,
 #}
-
-####################################################################################
-####################################################################################
-# DOWNLOADER_MIDDLEWARES = {
-#     'scrapy_splash.SplashCookiesMiddleware': 723,
-#     'scrapy_splash.SplashMiddleware': 725,
-#     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-# }
-
-
-# SPIDER_MIDDLEWARES = {
-#     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
-# }
-
-
-# SPLASH_URL = 'http://localhost:8050/'
-# # SPLASH_URL = 'http://192.168.59.103:8050'
-# # SPLASH_URL = 'http://127.17.0.1:8050'
-
-# DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
-
-####################################################################################
-####################################################################################
-
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -93,7 +65,7 @@ DOWNLOAD_DELAY = 0.2
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'Amazon.pipelines.AmazonPipeline': 300,
+#    'dota.pipelines.DotaPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)

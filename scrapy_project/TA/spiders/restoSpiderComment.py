@@ -19,13 +19,14 @@ class QuotesSpider(scrapy.Spider):
         self.start_urls = [kwargs.get('start_url')]
         if self.start_urls == [None]:
             self.start_urls = [
-                'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html'  # zone
+                # 'https://www.tripadvisor.co.uk/Restaurants-g191259-Greater_London_England.html'  # zone
+                'https://www.tripadvisor.fr/Restaurants-g187147-Paris_Ile_de_France.html'
             ]
 
-        self.max_resto_page = 5
-        self.max_review_page = 3
-        self.max_resto_page = None
-        self.max_review_page = None
+        self.max_resto_page = 50
+        self.max_review_page = 10
+        # self.max_resto_page = None
+        # self.max_review_page = None
 
         # To track the evolution of scrapping
         self.main_nb = 0
