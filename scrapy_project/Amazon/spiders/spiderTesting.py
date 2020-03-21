@@ -8,7 +8,6 @@ import logzero
 import logging
 from logzero import logger
 
-
 class SpiderAmazonTestingMain(scrapy.Spider):
     name = "SpiderAmazonTestingMain"
 
@@ -17,24 +16,24 @@ class SpiderAmazonTestingMain(scrapy.Spider):
         yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        logger.info('--- STARTING MAIN UNIT TESTING ---')
+        logger.error('--- STARTING MAIN UNIT TESTING ---')
         
         # Get the url of each reference on the current page
         links = get_info.get_reference_links(response)
-        logger.debug(len(links))
-        logger.debug(links[0])
+        logger.info(len(links))
+        logger.info(links[0])
         assert len(links) == 24,                                            'get_info.get_reference_links -- links'
 
 
         # Get pagination information
         next_page, page_number = get_info.get_main_pagination(response)
-        logger.debug('Next page : {}'.format(next_page))
-        logger.debug('Page number : {}'.format(page_number))
+        logger.info('Next page : {}'.format(next_page))
+        logger.info('Page number : {}'.format(page_number))
         assert type(next_page) == str,                                      'get_info.get_main_pagination -- next page'
         assert '/s?i=sporting-intl-ship&rh=n%3A16225014011&' in next_page,  'get_info.get_main_pagination -- next page'
         assert page_number == 2,                                            'get_info.get_main_pagination --  page number'
         
-        logger.info('--- MAIN UNIT TESTING IS OK---')
+        logger.error('--- MAIN UNIT TESTING IS OK ---')
         time.sleep(3)
       
 
@@ -47,37 +46,37 @@ class SpiderAmazonTestingReference(scrapy.Spider):
 
     def parse_reference(self, response):
         
-        logger.info('--- STARTING REFERNCE UNIT TESTING ---')
+        logger.error('--- STARTING REFERNCE UNIT TESTING ---')
 
         # Get price informations
         prices_list = get_info.get_prices(response)
         full_none = [i for i in prices_list if i is not None]
-        logger.debug('Prices')
-        logger.debug(prices_list)
-        logger.debug(full_none)
-        assert len(full_none) > 0
+        logger.info('Prices')
+        logger.info(prices_list)
+        logger.info(full_none)
+        assert len(full_none) > 0,                                          'get_info.get_main_pagination -- next page'
         
-
         # Get title information
         title = get_info.get_title(response)
         logger.debug(title)
-        assert title == "Fruit of the Loom Women's Cotton Pullover Sport Bra(Pack of 3)"
-        assert type(title)==str
+        supposed_title = "Fruit of the Loom Women's Cotton Pullover Sport Bra(Pack of 3)"
+        assert title == supposed_title,                                     'get_info.get_title'
+        assert type(title)==str,                                            'get_info.get_title'
 
         # Get description information
         description = get_info.get_description(response)
         logger.debug('Description')
-        assert type(description)==str
+        assert type(description)==str,                                      'get_info.get_description'
         
         # Get item description information
         items_description = get_info.get_items_description(response)    
         logger.debug('Description')
-        assert type(items_description)==str
+        assert type(items_description)==str,                                'get_info.get_items_description'
         
         # Get category information
         category = get_info.get_category(response)
         logger.debug('Category : {}'.format(category))
-        assert type(category)==str
+        assert type(category)==str,                                         'get_info.get_category'
 
-        logger.info('--- REFERENCE UNIT TESTING IS OK---')
+        logger.error('--- REFERENCE UNIT TESTING IS OK ---')
         time.sleep(10)

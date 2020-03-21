@@ -4,11 +4,14 @@ from Amazon.spiders import get_info
 from Amazon.items import AmazonItem
 # from scrapy_splash import SplashRequest
 
-
 # Logging import
 import logzero
 import logging
 from logzero import logger
+
+logzero.loglevel(logging.DEBUG) # To display content information
+logzero.loglevel(logging.INFO)  # To see number of parsed references
+#logzero.loglevel(logging.WARN)  # To see number of parsed main pages
 
 class SpiderAmazon(scrapy.Spider):
     name = "AmazonSpider"
@@ -45,7 +48,7 @@ class SpiderAmazon(scrapy.Spider):
 
         # Number of main page scrapped
         self.page += 1
-        logger.info('Parse page ({})'.format(self.page))
+        logger.warn('Parse page ({})'.format(self.page))
 
         # Get the url of each reference on the current page
         links = get_info.get_reference_links(response)

@@ -1,6 +1,7 @@
  # Purpose
 
- Was used for a Hacka
+Get infromation about Amazon products.
+Starts from 
  
  # Links
 

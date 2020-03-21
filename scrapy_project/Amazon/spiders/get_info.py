@@ -29,15 +29,6 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
                     if printing: print('LIMIT was reached. STOP.')
     return False
 
-
-def print_separation(value):
-    print('*' * 60)
-    print('*' * 60)
-    print('Object number :', value)
-    print('*' * 60)
-    print('*' * 60)
-
-
 ################################################################################################
 ################################################################################################
 #                                       Parsing main
@@ -56,6 +47,7 @@ def get_main_pagination(response):
     except:
         page_number = 100
     return next_page, page_number
+    
 ################################################################################################
 ################################################################################################
 #                                       Parsing a single referenec
