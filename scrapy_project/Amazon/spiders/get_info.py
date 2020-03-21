@@ -30,7 +30,6 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
     return False
 
 
-
 def print_separation(value):
     print('*' * 60)
     print('*' * 60)
@@ -47,8 +46,6 @@ def print_separation(value):
 
 def get_reference_links(response):
     return response.css('h2').xpath('a[contains(@class, "a-link-normal a-text-normal")]/@href').extract()
-
-
 
 
 def get_main_pagination(response):
