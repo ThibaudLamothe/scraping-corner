@@ -45,6 +45,7 @@ class SpiderAmazon(scrapy.Spider):
 
         # Number of main page scrapped
         self.page += 1
+        logger.info('Parse page ({})'.format(self.page))
 
         # Get the url of each reference on the current page
         links = get_info.get_reference_links(response)
@@ -61,6 +62,7 @@ class SpiderAmazon(scrapy.Spider):
 
         # Decision to follow a page or not
         if page_number <= 120:
+            
             yield response.follow(next_page, callback=self.parse)
             # next_page = 'https://www.amazon.com' + next_page
             # yield SplashRequest(url=next_page, callback=self.parse, args={'wait':10})
@@ -69,13 +71,17 @@ class SpiderAmazon(scrapy.Spider):
 
     def parse_reference(self, response):
         self.object += 1
-        get_info.print_separation(self.object)
+        logger.info('Parse object ({})'.format(self.object))
+        logger.debug(response.url)
 
         # Get price informations
-        price_1, price_2, price_3, price_4, price_5 = get_info.get_prices(response)
+        prices = get_info.get_prices(response)
+        price_1, price_2, price_3, price_4, price_5 = prices
+        logger.debug(prices)
 
         # Get title information
         title = get_info.get_title(response)
+        logger.debug(title)
 
         # Get description information
         description = get_info.get_description(response)
@@ -99,11 +105,6 @@ class SpiderAmazon(scrapy.Spider):
         item['items'] = items_description
         item['description'] = description
         item['url'] = response.url
-
-        # Display results
-        for key, value in item.items():
-            print('> ', key.upper(), '\n')
-            print(value)
 
         # Store value as decided in the pipeline
         yield item
