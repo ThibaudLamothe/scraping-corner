@@ -33,7 +33,10 @@ def get_config(dispatcher_path, sigle):
     file_name = data[sigle]['file_name']
     spider_name = data[sigle]['spider_name']
     project_name = data[sigle]['project_name']
-    return file_name, spider_name, project_name
+    test_spiders = None
+    if 'test' in data[sigle].keys():
+        test_spiders = data[sigle]['test']
+    return file_name, spider_name, project_name, test_spiders
 
 
 if __name__ == "__main__":
@@ -42,12 +45,12 @@ if __name__ == "__main__":
     print('Start scrapping. (Be sure that Scrapy is locally installed in your environment)')
 
     # Prepare storage
-    if 'scrapped_data' not in os.listdir('../'):
-        os.mkdir('../scrapped_data')
-        os.mkdir('../scrapped_data/corner_test')
+    if 'data' not in os.listdir('../'):
+        os.mkdir('../data')
+        os.mkdir('../data/corner_test')
 
     # Get the spiders parameters
-    file_, spider, project = get_config(
+    file_, spider, project, test_spiders = get_config(
         dispatcher_path='spider_dispatch.json',
         sigle=get_sigle()
     )
@@ -55,11 +58,17 @@ if __name__ == "__main__":
     # Set os information for default scrapy project (link with the scrapy.cfg file)
     os.environ['SCRAPY_PROJECT'] = project
 
+    # Making tests before running spiders
+    if test_spiders is not None:
+        for test in test_spiders:
+            cmd = 'scrapy crawl {}'.format(test)
+            os.system(cmd)
+
     # Start chronometer
     start_time = time.time()
 
     # Run spider
-    cmd = 'scrapy crawl {} -o ../scrapped_data/corner_test/{}'.format(spider, file_)
+    cmd = 'scrapy crawl {} -o ../data/corner_test/{}'.format(spider, file_)
     os.system(cmd)
 
     # Display execution time

@@ -1,7 +1,7 @@
 # Scrapy imports
 import scrapy
-from carrefour.spiders import get_info
-from carrefour.items import ArticleItem
+from Carrefour.spiders import get_info
+from Carrefour.items import ArticleItem
 from scrapy_splash import SplashRequest
 
 # Logging imports

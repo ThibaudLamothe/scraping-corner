@@ -45,8 +45,8 @@ class QuotesSpider(scrapy.Spider):
 
         # self.max_resto_page = 50
         # self.max_review_page = 10
-        # self.max_resto_page = None
-        # self.max_review_page = None
+        self.max_resto_page = None
+        self.max_review_page = None
 
         # To track the evolution of scrapping
         self.main_nb = 0
