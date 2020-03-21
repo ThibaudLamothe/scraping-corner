@@ -1,16 +1,17 @@
 # Classic
 numpy
 pandas==0.24.0
+logzero
 
-# Specific
+# Image manipulatin
+Pillow
+
+# Scraping Specific
 scrapy
 scrapy-splash
 selenium
 
-#
-Pillow
-
 # Dev env
-jupyter
-jupyterlab
-autopep8
+# jupyter
+# jupyterlab
+# autopep8

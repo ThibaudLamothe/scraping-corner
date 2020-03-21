@@ -1,0 +1,16 @@
+
+version: '3'
+services:
+    scraping:
+        build: ./
+        environment:
+            - DEPLOYED=True
+            # - PYTHONPATH=/predict_sales/src/scripts/
+        volumes:
+            - ./scrapy_project:/scraping-corner/scrapy_project
+            - ./data:/scraping-corner/data
+            - ./scripts:/scraping-corner/sripts
+            - ./spider_testing:/scraping-corner/spider_testing
+        ports:
+            - 8050:8050
+            - 8051:8051
