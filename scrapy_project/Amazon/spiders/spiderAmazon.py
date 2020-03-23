@@ -1,7 +1,7 @@
 # Scraping imports
 import scrapy
-from Amazon.spiders import get_info
 from Amazon.items import AmazonItem
+from Amazon.spiders import get_info
 # from scrapy_splash import SplashRequest
 
 # Logging import

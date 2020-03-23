@@ -1,9 +1,27 @@
-import scrapy
+#############################################################################
+#############################################################################
+#############################################################################
+
+# General import
 import datetime
 
-from ..items import AnnonceItem
+# Scraping imports
+import scrapy
+from LBC.items import LBCShortItem, LBCAnnonceItem
 from LBC.spiders import get_info
 
+# Logging import
+import logzero
+import logging
+from logzero import logger
+
+logzero.loglevel(logging.DEBUG) # To display content information
+# logzero.loglevel(logging.INFO)  # To see number of parsed references
+# logzero.loglevel(logging.WARN)  # To see number of parsed main pages
+
+#############################################################################
+#############################################################################
+#############################################################################
 
 class SpiderLBC(scrapy.Spider):
     name = "spiderLBC"
@@ -22,53 +40,55 @@ class SpiderLBC(scrapy.Spider):
         self.max_page = kwargs.get('max_page')
         if self.max_page:
             self.max_page = int(self.max_page)
+        else:
+            self.max_page = 1
 
-
-        self.max_page = 1
+        # Scrapping compteur
+        self.page = 0
+        self.object = 0
 
     def start_requests(self):
         for url in self.start_urls:
             yield scrapy.Request(url=url, callback=self.parse_main)
+            # yield scrapy.Request(url=url, callback=self.parse_short_annonce)
+
+
+#############################################################################
+#############################################################################
+#############################################################################
 
     def parse_main(self, response):
+        
+        # Number of main page scrapped
+        self.page += 1
+        logger.warn('Parse page ({}) - object ({})'.format(self.page, self.object))
 
-        print('> Getting items list')
+        # Get the url of each page
         lbc_items = get_info.get_items(response)
-        print('> Found {} items.'.format(len(lbc_items)))
-
-        for lbc_item in lbc_items:
-            get_info.print_star('Dealing with new item', 25)
-            lbc_item = get_info.get_item(lbc_item)
-            titre = get_info.get_titre_main(lbc_item)
-            url = get_info.get_url_main(lbc_item)
-
-            print('> Parsing : {} on main page'.format(titre))
-            information_main_page = {
-                'titre': titre,
-                'url': url,
-                'prix': get_info.get_prix_main(lbc_item),
-                'categorie': get_info.get_categorie_main(lbc_item),
-                'lieu': get_info.get_lieu_main(lbc_item),
-                'date': get_info.get_date_main(lbc_item),
-                'nb_pict': get_info.get_nb_pict_main(lbc_item)
-            }
-            print('> Results found : ', list(information_main_page.keys()))
-            yield response.follow(url=url, callback=self.parse_annonce)
+        links = [get_info.get_url_main(lbc_item) for lbc_item in lbc_items]
+        
+        # Following links
+        for link in links:
+            yield response.follow(url=link, callback=self.parse_annonce)
 
         # Following next page
-        get_info.print_star('ANALYSE OF NEXT PAGES', 30)
         next_page, next_page_number = get_info.get_next_list_of_announces(response)
         if get_info.go_to_next_page(next_page, next_page_number, self.max_page):
             yield response.follow(next_page, callback=self.parse_main)
+        
 
     def parse_annonce(self, response):
 
+        # Displaying quantity information
+        self.object += 1
+        logger.info('Parse object ({})'.format(self.object))
+
         # Creating annonce item
-        item = AnnonceItem()
+        item = LBCAnnonceItem()
 
         # Identification of annonce
         id_ = get_info.get_id(response)
-        get_info.print_star('Parsing annonce : {}'.format(id_), 15)
+        logger.debug('Parsing annonce : {}'.format(id_))
 
         # Basic information
         item['id_'] = id_
@@ -90,15 +110,55 @@ class SpiderLBC(scrapy.Spider):
         item['is_msg'] = is_envoi_msg
         item['is_num'] = is_numero
 
-        print('- Get Criteres')
         criteres = get_info.get_criteres(response)
         criteres_dict = get_info.critere_cleaning(criteres)
         item['critere'] = criteres_dict
-
-        print('- Get other data from main page')
+        logger.debug('Criteres : {}'.format(len(criteres_dict.keys())))
+        
         nb_pict = 3  # self.results[id_]['nb_pict']
         categorie = 'cat'  # self.results[id_]['categorie']
         item['nb_pict'] = nb_pict
         item['categorie'] = categorie
 
         yield item
+
+
+#############################################################################
+#############################################################################
+#############################################################################
+
+    def parse_short_annonce(self, response):
+
+        # Number of main page scrapped
+        self.page += 1
+        logger.warn('Parse page ({})'.format(self.page))
+
+        # Get the url of each page
+        lbc_items = get_info.get_items(response)
+        logger.debug('> Found {} items.'.format(len(lbc_items)))
+
+        for lbc_item in lbc_items:
+            
+            # Get information from main page
+            lbc_item = get_info.get_item(lbc_item)
+            titre = get_info.get_titre_main(lbc_item)
+            url = get_info.get_url_main(lbc_item)
+
+            item = LBCShortItem
+
+            item['titre']= titre,
+            item['url']= url,
+            item['prix']= get_info.get_prix_main(lbc_item),
+            item['categorie']=get_info.get_categorie_main(lbc_item),
+            item['lieu']=get_info.get_lieu_main(lbc_item),
+            item['date']= get_info.get_date_main(lbc_item),
+            item['nb_pict']= get_info.get_nb_pict_main(lbc_item)
+            
+            logger.debug('> Parsing : {} on main page'.format(titre))
+            logger.debug('> Results found : ', list(item.keys()))
+            yield item
+
+        # Following next page
+        next_page, next_page_number = get_info.get_next_list_of_announces(response)
+        if get_info.go_to_next_page(next_page, next_page_number, self.max_page):
+            yield response.follow(next_page, callback=self.parse_short_annonce)

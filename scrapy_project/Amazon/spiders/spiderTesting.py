@@ -1,12 +1,14 @@
 # Scraping imports
 import time
 import scrapy
+from logzero import logger
 from Amazon.spiders import get_info
 
-# Logging import
-import logzero
-import logging
-from logzero import logger
+
+#############################################################################
+#############################################################################
+#############################################################################
+
 
 class SpiderAmazonTestingMain(scrapy.Spider):
     name = "SpiderAmazonTestingMain"
@@ -37,6 +39,11 @@ class SpiderAmazonTestingMain(scrapy.Spider):
         time.sleep(3)
       
 
+#############################################################################
+#############################################################################
+#############################################################################
+
+
 class SpiderAmazonTestingReference(scrapy.Spider):
     name = "AmazonSpiderTestingReference"
 
@@ -46,7 +53,7 @@ class SpiderAmazonTestingReference(scrapy.Spider):
 
     def parse_reference(self, response):
         
-        logger.error('--- STARTING REFERNCE UNIT TESTING ---')
+        logger.error('--- STARTING REFERENCE UNIT TESTING ---')
 
         # Get price informations
         prices_list = get_info.get_prices(response)

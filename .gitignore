@@ -10,11 +10,4 @@ __pycache__
 *.json
 *.jl
 data
-notebook
-old_data
-scrapped_data
-
-
-# Environment files
-Pipfile
-Pipfile.lock
+notebook/*/

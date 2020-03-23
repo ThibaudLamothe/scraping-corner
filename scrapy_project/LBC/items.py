@@ -8,14 +8,17 @@
 import scrapy
 
 
-class LbcItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class LBCShortItem(scrapy.Item):
+    titre = scrapy.Field()
+    url = scrapy.Field()
+    prix= scrapy.Field()
+    categorie= scrapy.Field()
+    lieu= scrapy.Field()
+    date= scrapy.Field()
+    nb_pict= scrapy.Field()
 
-class AnnonceItem(scrapy.Item):
-    # define the fields for your item here like:
-    
+
+class LBCAnnonceItem(scrapy.Item):
     id_ = scrapy.Field()
     url = scrapy.Field()
     titre = scrapy.Field()

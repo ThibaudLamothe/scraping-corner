@@ -1,4 +1,12 @@
-def go_to_next_page(next_page, next_page_number, max_page, printing=True):
+################################################################################################
+################################################################################################
+#                                       Main functions
+################################################################################################
+################################################################################################
+from logzero import logger
+
+
+def go_to_next_page(next_page, next_page_number, max_page, printing=False):
     if next_page is None:
         if printing: print(' - There is no next_page')
     else:
@@ -25,15 +33,11 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=True):
 
 
 def is_url_already_in_db(url_id, id_list):
-    print('> Checking if ID : {} already in db'.format(url_id))
+    logger.debug('> Checking if ID : {} already in db'.format(url_id))
     # print(id_list)
     id_list = [str(i) for i in id_list]
-    print('  {}'.format(str(url_id) in id_list))
+    logger.debug('  {}'.format(str(url_id) in id_list))
     return str(url_id) in id_list
-
-
-def print_star(text, nb_star=25):
-    print('\n', '#' * nb_star, text, '#' * nb_star, '\n')
 
 
 def critere_cleaning(criteres):
@@ -52,7 +56,6 @@ def critere_cleaning(criteres):
 
 
 def check_buttons(buttons):
-    print('- Check buttons')
     is_numero = False
     if 'Voir le numéro' in buttons:
         is_numero = True
@@ -60,7 +63,6 @@ def check_buttons(buttons):
     if 'Envoyer un message' in buttons:
         is_envoi_msg = True
     return is_numero, is_envoi_msg
-
 
 ################################################################################################
 ################################################################################################
@@ -116,7 +118,8 @@ def get_id(response):
 
 def get_titre(response):
     # titre =  response.css('h1._1KQme ::text').extract_first()
-    return response.css('h1._246DF ::text').extract_first()
+    # return response.css('h1._246DF ::text').extract_first()
+    return response.css('h1.dgtty ::text').extract_first()
 
 def get_description(response):
     return response.css('span.content-CxPmi ::text').extract()
@@ -144,7 +147,7 @@ def get_criteres(response):
 def get_next_list_of_announces(response):
     # Loading next page url
     next_page = response.css('a._1f-eo::attr(href)').extract()[-1]
-    print('> NEXT PAGE : {}'.format(next_page))
+    #logger.info('> NEXT PAGE : {}'.format(next_page))
 
     # Computing next_page number
     if 'page=' in next_page:
@@ -153,5 +156,5 @@ def get_next_list_of_announces(response):
         next_page_number = int(next_page.split('p-')[1].replace('/', ''))
     else:
         next_page_number = None
-    print('> NEXT PAGE NUMBER : {}'.format(next_page_number))
+    #logger.info('> NEXT PAGE NUMBER : {}'.format(next_page_number))
     return next_page, next_page_number

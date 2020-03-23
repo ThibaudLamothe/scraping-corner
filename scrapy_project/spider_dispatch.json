@@ -23,7 +23,8 @@
   "LBC": {
     "file_name": "LBC_corner.jl",
     "spider_name": "spiderLBC",
-    "project_name": "LBC"
+    "project_name": "LBC",
+    "test":["spiderLBCTestingLong", "spiderLBCTestingShort"]
   },
   "PV": {
     "file_name": "PV_corner.jl",
@@ -49,10 +50,5 @@
     "file_name": "TP_corner.jl",
     "spider_name": "pilot",
     "project_name": "TrustPilot"
-  },
-  "Xba": {
-    "file_name": "X_basic_corner.jl",
-    "spider_name": "actuX_basic",
-    "project_name": "XHEC"
   }
 }
