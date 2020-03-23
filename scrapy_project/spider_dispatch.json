@@ -36,9 +36,15 @@
     "spider_name": "spiderSL",
     "project_name": "SL"
   },
-  "TA": {
-    "file_name": "TA_paris.jl",
+  "TAr": {
+    "file_name": "TA_paris_r.jl",
     "spider_name": "restoTAreview",
+    "project_name": "TA",
+    "test":["restoTAreviewTesting"]
+  },
+  "TAi": {
+    "file_name": "TA_paris_info.jl",
+    "spider_name": "restoTAinfo",
     "project_name": "TA"
   },
   "TAR": {

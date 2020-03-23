@@ -74,7 +74,6 @@ class QuotesSpider(scrapy.Spider):
             yield response.follow(url=url, callback=self.parse_resto)
 
         # self.max_page = 2
-        # BUG : ATTENTION next page number behaves like 1 2 3 2 3 4 ... (2 pages are loaded twice => correct selector)
         next_page, next_page_number = get_info.get_urls_next_list_of_restos(response)
 
         if get_info.go_to_next_page(next_page, next_page_number, self.max_resto_page):

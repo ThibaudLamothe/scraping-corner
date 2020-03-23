@@ -5,9 +5,11 @@ __pycache__
 .vscode
 .idea
 *.pyc
+*.scrapy 
 
 # Data
-*.json
 *.jl
+*.json
+credentials.json
 data
 notebook/*/

@@ -37,7 +37,9 @@ def go_to_next_page(next_page, next_page_number, max_page, printing=False):
 
 def get_urls_resto_in_main_search_page(response):
     #return response.css('a.restaurants-list-ListCell__restaurantName--2aSdo ::attr(href)').extract()
-    return response.xpath('//*[@class="_15_ydu6b"]').css('::attr(href)').extract()
+    urls = response.xpath('//*[@class="_15_ydu6b"]').css('::attr(href)').extract()
+    #urls = [url for url in urls if '.' in url[:5]]
+    return urls
 
 
 def get_urls_reviews_in_restaurant_page(reviews):
@@ -47,12 +49,13 @@ def get_urls_reviews_in_restaurant_page(reviews):
 def get_urls_next_list_of_restos(response):
     xpath = '//*[@id="EATERY_LIST_CONTENTS"]/div/div/a'
     next_page = response.xpath(xpath).css('::attr(href)').extract()[-1]
-    next_page_number = response.xpath(xpath).css('::attr(data-page-number)').extract_first()
+    next_page_number = response.xpath(xpath).css('::attr(data-page-number)').extract()[-1]
     return next_page, next_page_number
 
 
 def get_urls_next_list_of_reviews(response):
-    xpath = '//a[@class="nav next ui_button primary"]'
+    # xpath = '//a[@class="nav next ui_button primary"]'
+    xpath = '//div[@class="unified ui_pagination "]/a[contains(@class,"nav next")]'
     next_page = response.xpath(xpath).css('::attr(href)').extract_first()
     next_page_number = response.xpath(xpath).css('::attr(data-page-number)').extract_first()
     return next_page, next_page_number
@@ -245,7 +248,12 @@ def get_locality_from_resto(general):
 
 
 def get_country_from_resto(general):
-    return general.css('span.detail::text').extract()[1]
+    try:
+        country = general.css('span.detail::text').extract()[1] 
+    except:
+        country = None
+        print(' > Error with COUNTRY')
+    return country
 
 
 def get_tel_number_from_resto(general):
