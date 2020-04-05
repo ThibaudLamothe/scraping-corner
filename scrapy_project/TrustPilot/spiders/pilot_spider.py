@@ -23,9 +23,11 @@ class TrustPilotSpider(scrapy.Spider):
 
         # Main url to scrap
         self.start_urls = [
-            'https://fr.trustpilot.com/categories/bank',
+            # 'https://fr.trustpilot.com/categories/bank',
+            'https://fr.trustpilot.com/categories/money_insurance?numberofreviews=0&timeperiod=0',
+            
         ]
-
+        
         # Scrapping compteur
         self.page = 0
         self.object = 0
@@ -35,7 +37,9 @@ class TrustPilotSpider(scrapy.Spider):
         
 
     def start_requests(self):
+
         for url in self.start_urls:
+            logger.error(url)
             yield scrapy.Request(url=url, callback=self.parse)
             
 
@@ -55,6 +59,8 @@ class TrustPilotSpider(scrapy.Spider):
         # Get pagination information
         next_page = get_info.get_next_page_of_articles(response)
         next_page_number = get_info.get_next_page_number(next_page)
+        logger.error(next_page)
+        logger.error(next_page_number)
 
         # Decision to follow a page or not
         if get_info.go_to_next_page(next_page, next_page_number, self.max_page_articles):

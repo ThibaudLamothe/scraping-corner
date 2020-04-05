@@ -1,3 +1,4 @@
+from logzero import logger
 ################################################################################################
 ################################################################################################
 #                                       Main functions
@@ -43,8 +44,19 @@ def get_article_urls(response):
 
 def get_next_page_of_articles(response):
     try:
-        css_locator = 'h1 ::text'
-        next_page = response.css(css_locator).extract_first()
+        # css_locator = 'h1 ::text'
+        # next_page = response.css(css_locator).extract_first()
+        
+        
+        # logger.info(xpath)
+        # logger.info(next_age)
+        # if next_page is None:
+        xpath = '//a[@data-pagination-button-next-paginationlink="true"]/@href'
+        logger.info(xpath)
+        next_page = response.xpath(xpath).extract_first()
+        logger.info(next_page)
+        
+
         return next_page
     except:
         return None
@@ -52,7 +64,10 @@ def get_next_page_of_articles(response):
 # used for both articles and reviews's next pages
 def get_next_page_number(next_page):
     try:
-        next_page_number = int(next_page.split('page=')[-1])
+        next_page_number = next_page.split('&')
+        next_page_number = [i for i in next_page_number if 'page=' in i]
+
+        next_page_number = int(next_page_number[0].split('page=')[-1])
         return next_page_number
     except:
         return None

@@ -53,8 +53,9 @@
     "project_name": "TA"
   },
   "TrP": {
-    "file_name": "TP_corner.jl",
-    "spider_name": "pilot",
-    "project_name": "TrustPilot"
+    "file_name": "TP_corner_insurance_5.jl",
+    "spider_name": "TrustPilot",
+    "project_name": "TrustPilot",
+    "test":["TrustPilotTest"]
   }
 }
