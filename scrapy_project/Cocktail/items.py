@@ -14,11 +14,12 @@ class CocktailItem(scrapy.Item):
     picture_url = scrapy.Field()
     level = scrapy.Field()
     rating = scrapy.Field()
-    nb_views = scrapy.Field()
+    nb_reviews = scrapy.Field()
     description = scrapy.Field()
-    ingredient_dict = scrapy.Field()
-    equipment_dict = scrapy.Field()
-    how_to_make_dict = scrapy.Field()
-    similar_recipes_dict = scrapy.Field()
+    alcool_lvl = scrapy.Field()
+    ingredients = scrapy.Field()
+    equipments = scrapy.Field()
+    instructions = scrapy.Field()
+    tags = scrapy.Field()
     
 

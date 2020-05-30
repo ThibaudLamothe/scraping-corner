@@ -55,284 +55,74 @@ def get_urls_next_list_of_cocktails(response):
 
 ################################################################################################
 ################################################################################################
-#                                       REVIEW INFORMATION 
+#                                       COCKTAIL INFORMATION 
 ################################################################################################
 ################################################################################################
 
-######################
-#  Caclulation Part  #
-######################
-
-def get_review_url(response):
+def get_url(response):
     return response.url
 
-
-def get_id_resto(url):
-    return url.split('-')[1] + '-' + url.split('-')[2]
-
-
-def get_id_comment(url):
-    id_resto = get_id_resto(url)
-    return id_resto + '-' + url.split('-')[3]
-
-
-def get_resto_name(url):
-    return url.split('-')[4]
-
-
-def get_review_reviewer_url(reviewer_pseudo):
-    return 'https://www.tripadvisor.co.uk/Profile/{}'.format(reviewer_pseudo)
-
-
-######################
-#  Scrapping Part    #
-######################
-
-def get_reviews_list_in_restaurant_page(response):
-    return response.css('div.review-container')
-
-
-def get_review(response):
-    return response.css('div.review-container')[0]
-
-
-def get_review_resto_url(response):
-    return response.css('div.surContent a.HEADING::attr(href)').extract_first()
-
-
-def get_review_rating(response):
-    return response.css('div.rating span span::attr(alt)').extract_first().split(' ')[0]
-
-
-def get_review_title(review):
-    return review.css('div.quote a span.noQuotes ::text').extract_first()
-
-
-def get_review_content(review):
-    return review.css('div.entry')[0].css('p.partial_entry::text').extract()
-
-
-def get_review_diner_date(review):
-    try:
-        diner_date = review.css('div.prw_reviews_stay_date_hsx ::text').extract()[-1]
-    except:
-        print('> ERROR : diner_date')
-        diner_date = None
-    return diner_date
-
-
-def get_review_rating_date(review):
-    try:
-        rating_date = review.css('span.ratingDate::attr(title)').extract_first()
-    except:
-        print('> ERROR : rating_date')
-        rating_date = None
-    return rating_date
-
-
-def get_review_answer_text(review):
-    has_answer = False
-    answer_text = None
-    if len(review.css('div.entry')) > 1:
-        has_answer = True
-        answer_text = review.css('div.entry')[1].css('p.partial_entry::text').extract()
-    return answer_text
-
-
-def get_review_reviewer_pseudo(review):
-    try:
-        reviewer_pseudo = review.css('span.scrname::text').extract_first()
-    except:
-        reviewer_pseudo = None
-    return reviewer_pseudo
-
-
-def get_review_reviewer_origin(review):
-    try:
-        reviewer_origin = review.css('span.userLocation::text').extract()
-    except:
-        reviewer_origin = None
-    return reviewer_origin
-
-
-def get_review_reviewer_info_sup(review):
-    try:
-        info = review.css('div.memberBadgingNoText span ::attr(class)').extract()
-        info = [i.replace('ui_icon ', '') for i in info if i != 'badgetext']
-        count = review.css('span.badgetext::text').extract()
-        reviewer_info_sup = list(zip(info, count))
-    except:
-        reviewer_info_sup = None
-    return reviewer_info_sup
-
-
-def get_review_other_ratings_category(review):
-    try:
-        other_ratings_category = review.css('li.recommend-answer ::text').extract()
-    except:
-        other_ratings_category = None
-    return other_ratings_category
-
-
-def get_review_other_ratings_value(review):
-    try:
-        other_ratings_value = review.css('li.recommend-answer div.ui_bubble_rating::attr(class)').extract()
-        other_ratings_value = [i.split('_')[-1] for i in other_ratings_value]
-    except:
-        other_ratings_value = None
-    return other_ratings_value
-
-
-################################################################################################
-################################################################################################
-#                                       RESTO INFORMATION 
-################################################################################################
-################################################################################################
-
-
-######################
-#  Caclulation Part  #
-######################
-
-# url
-def get_resto_url(response):
-    return response.url
-
-
-def get_resto_name_in_url_from_resto(url):
-    return url.split('-')[-2]
-
-
-######################
-#  Scrapping Part    #
-######################
-
-def get_review_information_from_resto(response):
-    return response.xpath('//*[@id="taplc_resp_rr_top_info_rr_resp_0"]/div')
-
-
-# General
-def get_title_from_resto(general):
-    return general.css('h1::text').extract_first()
-
-
-def get_rating_from_resto(general):
-    try:
-        return general.css('div.ratingContainer div span::attr(alt)').extract_first().split(' ')[0]
-    except:
-        print('> Error with RATING')
-        return None
-
-
-def get_nb_review_from_resto(general):
-    nb_review = general.css('div.ratingContainer span.reviewCount::text').extract_first()
-    if nb_review:
-        return nb_review.split(' ')[0]
-    return 0
-
-
-def get_street_adress_from_resto(general):
-    return general.css('span.street-address::text').extract()
-
-
-def get_locality_from_resto(general):
-    return general.css('span.locality::text').extract()
-
-
-def get_country_from_resto(general):
-    try:
-        country = general.css('span.detail::text').extract()[1] 
-    except:
-        country = None
-        print(' > Error with COUNTRY')
-    return country
-
-
-def get_tel_number_from_resto(general):
-    try:
-        tel_number = general.css('span.detail::text').extract()[2]
-        tel_number2 = general.css('span.is-hidden-mobile::text').extract_first()
-    except:
-        tel_number = None
-        tel_number2 = None
-        print('> Error with TEL Number')
-    return tel_number
-
-
-def get_url_menu_from_resto(general):
-    return general.css('div.is-hidden-mobile::attr(onclick)').extract()[-1].split('\'')[-2]
-
-
-def get_traveler_ratings_from_resto(response):
-    return response.css('div.content div.choices span.row_num ::text').extract()
-
-
-def get_info_1(general):
-    try:
-        info_1 = general.css('div.header_links a::text').extract()
-    except:
-        info_1 = None
-    return info_1
-
-
-def get_info_2(general):
-    try:
-        info_2 = general.css('div.header_links::text').extract()
-    except:
-        info_2 = None
-    return info_2
-
-
-def get_price_range(info_1):
-    try:
-        price_range = info_1[0]
-    except:
-        price_range = None
-    return price_range
-
-
-def get_picture_number(response):
-    try:
-        picture_number = response.css('span.see_all_count span.details::text').extract_first().split(' ')[-1][1:-1]
-    except:
-        picture_number = None
-    return picture_number
-
-
-def get_description_from_resto(response):
-    details = response.css('div.restaurants-details-card-DetailsCard__innerDiv--1Imq5')
-    long_description = details.css(
-        'div.restaurants-details-card-DesktopView__desktopAboutText--1VvQH::text').extract_first()
-    details = details.css('div.ui_column ::text').extract()
-    return long_description, details
-
-
-# Rating and reviews
-def get_ratings_and_reviews(response):
-    return response.css('div.restaurants-detail-overview-cards-DetailOverviewCards__wrapperDiv--1Dfhf')
-
-
-def get_resto_avg_rating(rating):
-    return rating.css(
-        'span.restaurants-detail-overview-cards-RatingsOverviewCard__overallRating--nohTl::text').extract_first()
-
-
-def get_resto_nb_review(rating):
-    return rating.css(
-        'a.restaurants-detail-overview-cards-RatingsOverviewCard__ratingCount--DFxkG::text').extract_first()
-
-
-def get_resto_local_ranking(rating):
-    return rating.css('div.restaurants-detail-overview-cards-RatingsOverviewCard__ranking--17CmN ::text').extract()
-
-
-def get_resto_other_information(rating):
-    return rating.css('div.restaurants-detail-overview-cards-RatingsOverviewCard__award--31yzt ::text').extract()
-
-
-def get_resto_all_rankings(rating):
-    return rating.css('span.ui_bubble_rating ::attr(class)').extract()[1:]
-
-
-def get_resto_categories_ranking(rating):
-    return rating.css('span.restaurants-detail-overview-cards-RatingsOverviewCard__ratingText--1P1Lq ::text').extract()
+def get_cocktail_name(response):
+    return response.css('h1.item-title ::text').extract_first()
+
+def get_cocktail_picture_url(response):
+    return response.css('div.item-hero-img img ::attr(src)').extract_first()  
+
+def get_cocktail_level(response):
+    return response.css('div.item-difficulty span ::text').extract_first()  
+
+def get_cocktail_rating(response):
+    return response.css('span.item-rating-count ::text').extract_first()
+
+def get_cocktail_nb_reviews(response):
+    return response.css('span.item-rating-count ::text').extract_first()
+
+def get_cocktail_description(response):
+    return response.css('div.item-summary p ::text').extract_first() 
+
+def get_ingredients_panel(response):
+    return response.css('div.ingredients ul.instruction-item-list li' )
+
+def get_cocktail_ingredient_dict(ingredients):
+    ingredient_dict = {}
+    for ingredient in ingredients[:-1]: # the last is the quantity of alochol
+        quantite = ingredient.css('i> span ::text').extract()[0] 
+        unite = ingredient.css('i> span ::text').extract()[1] 
+        name = ingredient.css('div ::text').extract_first().strip()
+        ingredient_dict[name] = {'quantite':quantite, 'unite':unite}
+    return ingredient_dict
+
+def get_cocktail_alcool_quantity(ingredients):
+    return ingredients[-1].css('i.instruction-item-list-detail ::text').extract_first().strip()
+
+def get_cocktail_equipment_dict(response):
+    equipment_dict = {}
+    css = 'div.equipment ul.instruction-item-list li' 
+    equipments = response.css(css)
+    for equipment in equipments:
+        name = equipment.css('div ::text').extract()
+        quantite = equipment.css('i > span ::text').extract_first()
+        
+        # Alternative to detect earlier if there is a link on the name
+        if len(name)==3:  # when itt was a link, text around it
+            name = name[1].strip()
+        elif len(name)==1: # when no link there is only one text
+            name = name[0].strip()
+        else:
+            logger.error('No name for that equipment.')
+        equipment_dict[name] = quantite
+    return equipment_dict
+
+def get_cocktail_instructions_list(response):
+    css = 'ol.method-list li'
+    instructions = response.css(css)
+    instructions_list = []
+    for nb, instruction in enumerate(instructions):
+        primary = ' '.join(instruction.css('div ::text').extract())
+        secondary = ' '.join(instruction.css('p ::text').extract())
+        instructions_list.append([primary, secondary])
+    return instructions_list
+
+
+def get_cocktail_tags(response):
+    return response.css('ul.item-tags-list li ::text').extract()

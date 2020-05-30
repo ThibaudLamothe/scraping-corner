@@ -40,15 +40,15 @@ class Cocktail(scrapy.Spider):
         """MAIN PARSING : Start from a classical restaurant page
             - Usually there are 30 restaurants per page
         """
-        logger.warn('> PARSING NEW MAIN PAGE OF RESTO ({})'.format(self.main_nb))
+        logger.warn('> PARSING NEW MAIN PAGE OF COCKTAILS ({})'.format(self.main_nb))
 
         self.main_nb += 1
 
         # Get the list of these 30 restaurants
         my_urls = get_info.get_urls_cocktails_in_main_search_page(response)
         for urls in my_urls:
-            # yield response.follow(url=urls, callback=self.parse_cocktail)
-            logger.info(my_urls)
+            yield response.follow(url=urls, callback=self.parse_cocktail)
+            # logger.info(my_urls)
         
 
         next_page, next_page_number = get_info.get_urls_next_list_of_cocktails(response)
@@ -61,20 +61,36 @@ class Cocktail(scrapy.Spider):
             - Read these data and store them
         """
         self.cocktail_nb += 1
+        logger.info('> COCKTAIL  ({}) = {}'.format(self.cocktail_nb, response.url))
 
         # Intitiate storing object
-        cocktail_item = cocktail_item()
+        cocktail_item = CocktailItem()
+        ingredients = get_info.get_ingredients_panel(response)
 
         # URL
-        cocktail_item['name']                 = get_info.get__()
-        cocktail_item['url']                  = get_info.get__()
-        cocktail_item['picture_url']          = get_info.get__()
-        cocktail_item['level']                = get_info.get__()
-        cocktail_item['rating']               = get_info.get__()
-        cocktail_item['nb_views']             = get_info.get__()
-        cocktail_item['description']          = get_info.get__()
-        cocktail_item['ingredient_dict']      = get_info.get__()
-        cocktail_item['equipment_dict']       = get_info.get__()
-        cocktail_item['how_to_make_dict']     = get_info.get__()
-        cocktail_item['similar_recipes_dict'] = get_info.get__()
+        cocktail_item['name']           = get_info.get_cocktail_name(response)
+        cocktail_item['url']            = get_info.get_url(response)
+        cocktail_item['picture_url']    = get_info.get_cocktail_picture_url(response)
+        cocktail_item['level']          = get_info.get_cocktail_level(response)
+        cocktail_item['rating']         = get_info.get_cocktail_rating(response)
+        cocktail_item['nb_reviews']     = get_info.get_cocktail_nb_reviews(response)
+        cocktail_item['description']    = get_info.get_cocktail_description(response)
+        cocktail_item['alcool_lvl']     = get_info.get_cocktail_alcool_quantity(ingredients)
+        cocktail_item['ingredients']    = get_info.get_cocktail_ingredient_dict(ingredients)
+        cocktail_item['equipments']     = get_info.get_cocktail_equipment_dict(response)
+        cocktail_item['instructions']   = get_info.get_cocktail_instructions_list(response)
+        cocktail_item['tags']           = get_info.get_cocktail_tags(response)
         yield cocktail_item
+
+    
+    
+    
+    
+   
+    
+    
+   
+    
+    
+    
+    
