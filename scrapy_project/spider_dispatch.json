@@ -15,6 +15,11 @@
     "spider_name": "BookingSpider",
     "project_name": "Booking"
   },
+  "COC": {
+    "file_name": "cocktail_corner.jl",
+    "spider_name": "spiderCocktail",
+    "project_name": "Cocktail"
+  },
   "CRF": {
     "file_name": "carrefour_corner.jl",
     "spider_name": "CarrefourSpider",
