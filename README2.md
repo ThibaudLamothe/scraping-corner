@@ -79,3 +79,6 @@ __spider_dispatch.json__
 
 # Using scraping app
 
+
+# Interesting links
+- yielding multiple items in scrapy : https://stackoverflow.com/questions/39227277/can-scrapy-yield-different-kinds-of-items
