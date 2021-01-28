@@ -28,7 +28,7 @@ def get_config(dispatcher_path, sigle):
     with open(dispatcher_path) as json_file:
         data = json.load(json_file)
     if sigle not in data.keys():
-        return None, None, None
+        return None, None, None, None
 
     file_name = data[sigle]['file_name']
     spider_name = data[sigle]['spider_name']
