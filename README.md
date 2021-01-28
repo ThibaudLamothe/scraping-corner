@@ -1,18 +1,77 @@
 # Introduction
 
-__This part of the course concerns Data Extraction : we scrap restaurant data from TripAdvisor.__
+# Structure of the repo
+```
+├── .gitignore                   <-  contains description of files not to upload on git repository  
+├── README.md                    <-  the top-level README : repo description  
+├── docker-compose.yml           <-  running scraping env through docker and docker-compose  
+├── Dockerfile                   <-  running scraping env through docker and docker-compose  
+├── requirements.txt             <-  contains necessary packages (incorporated in  Dockerfile)  
+├── notebook                     <== To prepare a scraping I use to prepare the css selectors through notebooks 
+    ├── *.ipynb                  <-  usually with one notebook per spider or per website
+    ├── *.ipynb                  <-  usually with one notebook per spider or per website
+    ├── ...
+├── scrapy_project               <== contains all scripts relative to scrapy
+    ├── scrapy.cfg               <-  default scrapy file. Used to deal with multiple projects.
+    ├── run_spider.py            <-  start the scraping process
+    ├── spider_dispatch.json     <-  configurates the scraping process
+    ├── ProjectWebsite1          <== folder created by scrapy for a first project (see "Using scrapy" for more explanations)
+    ├── ProjectWebsite2          <== folder created by scrapy for a first project (see "Using scrapy" for more explanations)
+    ├── ...
+├── scripts                      <== contains specific for common tasks while scraping
+    ├── count_line.py            <-  used to count the number of released item from an executing scraping
+    ├── display_info.py          <-  used to display information about the released items from an executing scraping
+    ├── jl_to_df.py              <-  converts a json line file into a pandas DataFrame 
+├── selenium                     <== contains all scripts relative to scrapy
+    ├── selenium_basics.py       <-  selenium basics actions wrapped into a Python Class to simplify exploration process
+    ├── chromedriver             <-  not uploaded, but this its position.
+├── template                     <== template files
+    ├── ...                      <- (TBD)
+├── tor                          <== experimentation to crawl the darkweb
+  ``` 
 
-This folder contains 3 folders and 3 scripts
-- [run_spider.py](run_spider.py): run this one to start scrapping (see how to later ;)) 
-- [count_line.py](count_line.py) : while scrapping can give an idea of the number of item already stored.
-- [jl_to_df.py](jl_to_df.py) : output file is a `jl` file. This is a script to read a `jl` file and transform it into a `pandas DataFrame`
-- `scrapy_TA`: contains the `scrapy` project and the `spiders` 
-- `spider_testing` : contains files to test the html/css selectors used in spiders
-- `scrapped_data` : will be created automatically when spider is run
 
-A better description of all of them is availabe right now ! Enjoy :) !
+# Using Scrapy
 
-# Single scripts
+The main tool used to perform web scraping is `Scrapy`, a python library. (documentation [here](https://docs.scrapy.org/en/latest/))
+
+
+Into the `scrapy_project` folder, are basically all the scrapy projects created with the `scrapy startproject project_name` command provided by the framework. The list of these project is described in a following section, with brief details for each of them. For the biggers one, I try to maintain a README file directly into the project folder.
+
+## Default Scrapy files
+
+When creating a new project with scrapy , it create a structure like the following : 
+
+```
+├── project_name/
+  ├── scrapy.cfg
+  ├── project_name/
+    ├── spiders 
+    ├── items.py
+    ├── middlewares.py
+    ├── pipelines.py
+    ├── settings.py
+```
+
+__scrapy.cfg__
+
+This configuration has the structure of an `INI file` and contains two sections which are `[settings]` and `[deploy]`.
+
+Here to have multiple projects connected by a single configuration file.
+
+__Spiders__ : There are the objects use to realise the scraping itself.
+In this project, two spiders are availabe
+- restoTAreview : get information for each reveiw of each
+- restoTAinfo
+
+__Project files__
+- [items.py](scrapy_TA/items.py) : we create in here objects which will be used to store data
+- [settings.py](scrapy_TA/settings.py) : define parameters about crawling (almost default parameters)
+- [middlewares.py](scrapy_TA/middlewares.py) : original file
+- [pipelines.py](scrapy_TA/pipelines.py) : original file  
+
+
+## Custom files to leverage the scraping-corner 
 
 __[run_spider.py](run_spider.py)__
 
@@ -28,7 +87,7 @@ Two parameters will impact the execution of the `run_spider.py` script :
 - `file_name`: the name of the `*.jl` file where data are saved
 - `spider_name`: the name of the spider which will be run (there are 2 of them)
 
->When running a spider, a new folder `scrapped_data` will be created at the root of the `scrapping` folder. Files will be saved in it.
+>When running a spider, a new folder `scraped_data` will be created at the root of the `scraping` folder. Files will be saved in it.
 
 
 It is also possible to change the log level while crawling. The library used is [logzero](https://logzero.readthedocs.io/en/latest/), and loglevel (Debug/Info/Warn/Debug) are defined into spider class. Default value in here is `logger.INFO`
@@ -42,7 +101,7 @@ As running a spyder might be very long (up to days if no limit is specified), th
 
 Use the following command to get your answer :
 ```bash 
-python count_line.py scrapped_data\your_file.py
+python count_line.py scraped_data\your_file.py
 ```
 __[jl_to_df.py](jl_to_df.py)__
 
@@ -50,24 +109,14 @@ You will find here some lines to convert your `jl` file into a very manipulative
 
 >Not created yet, function is already written somewhere on my computer, will add do this very soon :)
 
-# Scrapy 
 
-The selected tool to perform web scraping is `Scrapy`, a python librarie (documentation [here](https://docs.scrapy.org/en/latest/)).
+## About scraped data
 
-All the files here come from scrapy framework :
-
-- [items.py](scrapy_TA/items.py) : we create in here objects which will be used to store data
-- [settings.py](scrapy_TA/settings.py) : define parameters about crawling (almost default parameters)
-- [middlewares.py](scrapy_TA/middlewares.py) : original file
-- [pipelines.py](scrapy_TA/pipelines.py) : original file
-
-__Spiders__ : There are the objects use to realise the scrapping itself.
-In this project, two spiders are availabe
-- restoTAreview : get information for each reveiw of each
-- restoTAinfo
+This folder does not exist on the git repo and is specified into the `*.gitignore` file, so that it never appears.
+It will be automatically created during spider run. You will find your files into it.
 
 
-# Spider testing
+## About Spider testing
 
 The second main folder here is the one to test spiders. Indeed sometimes the html structure of a website change and the selectors that we define might not be accurate in the future.
 
@@ -76,13 +125,53 @@ There is one file per spider :
 - [test_review.py](spider_testing/test_review.py)
 
 > The tests are not yet available for now, only a basic request is done into `test_review.py`. Will be available in a further version.
+> 
 
-# Scrapped data
+# Project list
 
-This folder does not exist on the git repo and is specified into the `*.gitignore` file, so that it never appears.
-It will be automatically created during spider run. You will find your files into it.
+> Amazon  : OK
+  - Spider works
+  - Full project : Hackathon for XHEC students 2020
+  - Needs further processing
+  - Tried to scrap with Splash (useful lines still in spider and settings code)
 
-Then, as this folder is only reserved to scrapping, you will find cleaning, EDA and basic pre-processing [here](../cleaning/README.md).
+> Booking
+  - Spider does not work
+
+> Carrefour
+  - Uses Splash
+  - Working
+  - Code to imprve
+  
+> LBC : leboncoin
+  - Spider is working 80%
+  - Trying to repare buttemporary banned from LBC 
+  - UnitTesting in process (To be finished when ban is over or after using proxies)
+
+
+> PV : ParuVendu
+  - Works Fine
+  - Logging not updated
+  - Code to clean
+  - No Unit Testing (not in a hurry as the structure as not changed in more than one year)
+  
+> SL : SeLoger
+  - Does not work : seems to be a lot of things to improve
+
+> TA : TripAdvisor
+  - Multilple spiders
+    - airlines : not working
+    - hotels : not working
+    - restaurant (information about restos) : working but quality to be imporved
+    - restaurant (reviews of restos) : working but stops after few iterations (only 30k reviews for Paris => understand why)
+
+> TrustPilot
+  - Parts are working but I don't know how
+
+
+# Using Selenium
+# Using Docker
+
 
 
 # To-Do & Improvements
@@ -95,11 +184,16 @@ Then, as this folder is only reserved to scrapping, you will find cleaning, EDA 
 - Explore scrapy interface to run spiders
 - Define and create a front to select the parameters evoked upper and run spiders.
 
-# To go further
 
-Here are some links related to scrapping, that you could use 
+# Resources
+
+
 - [Data Camp](https://www.datacamp.com/courses/web-scraping-with-python) : A course about how tu use scrapy
-- [ParseHub](https://www.parsehub.com/) : a basic tool to realize scrapping without coding
+- [ParseHub](https://www.parsehub.com/) : a basic tool to realize scraping without coding
 - [Selenium](https://selenium-python.readthedocs.io/) : a tool to simulate user interface
-- [Scrapping wikipedia](https://fr.wikipedia.org/wiki/Web_scraping) : definitions about scrapping
+- [scraping wikipedia](https://fr.wikipedia.org/wiki/Web_scraping) : definitions about scraping
 - [Scrapy website](https://scrapy.org/) : a huge treasure for scrapers 
+
+- yielding multiple items in scrapy : https://stackoverflow.com/questions/39227277/can-scrapy-yield-different-kinds-of-items
+- https://www.tutorialspoint.com/scrapy/scrapy_sending_e-mail.htm
+- https://www.tutorialspoint.com/scrapy/index.htm
