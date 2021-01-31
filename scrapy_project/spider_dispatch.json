@@ -10,6 +10,11 @@
     "project_name": "Amazon",
     "test":["SpiderAmazonTestingMain", "AmazonSpiderTestingReference"]
   },
+  "BNB": {
+    "file_name": "airbnb_corner_3.json",
+    "spider_name": "AirbnbSpider",
+    "project_name": "Airbnb"
+  },
   "BOK": {
     "file_name": "booking_corner.jl",
     "spider_name": "BookingSpider",
